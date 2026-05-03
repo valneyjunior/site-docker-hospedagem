@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aceite Digital — Hostweb</title>
+  <link rel="stylesheet" href="/static/css/aceite.css" />
+</head>
+<body>
+<div class="page-wrapper">
+
+  <!-- HEADER -->
+  <header class="header">
+    <img src="https://hostweb.com.br/wp-content/uploads/2021/03/Logo-Hostweb.png"
+         alt="Hostweb" class="logo"
+         onerror="this.style.display='none';document.getElementById('logo-fb').style.display='block'"/>
+    <span id="logo-fb" class="logo-fallback" style="display:none">Hostweb</span>
+    <p class="header-sub">Aceite Digital de Contrato — Validade Jurídica Garantida</p>
+  </header>
+
+  <!-- BADGES LEGAIS -->
+  <div class="badges">
+    <span class="badge">⚖️ Marco Civil Lei 12.965/2014</span>
+    <span class="badge">🔒 LGPD Lei 13.709/2018</span>
+    <span class="badge">📋 Código Civil art. 107</span>
+    <span class="badge">🛡️ CDC Lei 8.078/1990</span>
+    <span class="badge">🏛️ Foro: Fortaleza/CE</span>
+  </div>
+
+  <!-- PLANO SELECIONADO (visível quando plan_id vem da URL) -->
+  {% if plan_id %}
+  <div class="plano-info-box">
+    <div class="plano-info-icon">📋</div>
+    <div class="plano-info-texto">
+      <div class="plano-info-label">Plano selecionado para contratação</div>
+      <div class="plano-info-nome">{{ plan_nome }}</div>
+      <div class="plano-info-versao">Termos {{ versao_termos }} · Hash SHA-256: <code>{{ hash_termos[:20] }}…</code></div>
+    </div>
+    <div class="plano-info-stripe">
+      <span class="badge-stripe">🔒 Pagamento via Stripe</span>
+      <span class="badge-cartao">💳 Cartão de crédito/débito</span>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- RESUMO EM LINGUAGEM SIMPLES (exigência de clareza — CDC art. 46) -->
+  <div class="resumo-termos">
+    <h3 class="resumo-titulo">📌 O que você está aceitando — em linguagem simples</h3>
+    <div class="resumo-grid">
+      <div class="resumo-item resumo-ok">✅ A Hostweb fornece hospedagem, e-mail ou domínio conforme o plano escolhido</div>
+      <div class="resumo-item resumo-ok">✅ Pagamento pré-pago via cartão no Stripe — mensal ou anual</div>
+      <div class="resumo-item resumo-ok">✅ SLA garantido: 99,5% ao mês (compartilhado) ou 99,9% ao mês (dedicado)</div>
+      <div class="resumo-item resumo-ok">✅ Suspensão após 3 dias de atraso; cancelamento após 15 dias</div>
+      <div class="resumo-item resumo-ok">✅ Aviso por e-mail com 7 dias de antecedência antes de remover dados</div>
+      <div class="resumo-item resumo-ok">✅ Seus dados seguem a LGPD — você é o controlador, a Hostweb é operadora</div>
+      <div class="resumo-item resumo-aviso">⚠️ Uso proibido para spam, conteúdo ilegal, phishing ou ataques — suspensão imediata</div>
+      <div class="resumo-item resumo-aviso">⚠️ Cancelamento antecipado de plano anual pode ter cobrança proporcional</div>
+      <div class="resumo-item resumo-info">📍 Foro de eleição: Comarca de Fortaleza/CE para eventuais disputas</div>
+    </div>
+    <p class="resumo-nota">Este é um resumo informativo. O <a href="/termos.html" target="_blank">Termo completo</a> abaixo e ao lado prevalece em caso de divergência.</p>
+  </div>
+
+  <!-- GRID PRINCIPAL -->
+  <div class="main-grid">
+
+    <!-- COLUNA ESQUERDA: TERMO COMPLETO -->
+    <section class="termo-box">
+      <h2 class="box-title">
+        📄 Termo de Aceite Digital
+        <span class="versao-badge">{{ versao_termos }}</span>
+      </h2>
+      <div class="termo-scroll" id="termo-scroll">
+
+        <h3>TERMO DE ACEITE DIGITAL – SERVIÇOS HOSTWEB</h3>
+        <p><em>Hospedagem cPanel (Compartilhada e Dedicada) e Licenciamento Zoho</em></p>
+        <p class="versao-doc">Versão: {{ versao_termos }} · Hash SHA-256: <code>{{ hash_termos }}</code></p>
+
+        <p><strong>IMPORTANTE:</strong> Este Termo regula as condições para contratação e uso dos serviços da Hostweb Data Center e Serviços LTDA EPP ("HOSTWEB"), pelo cliente ("CONTRATANTE"). Ao clicar em "Concordo e quero contratar" ou ao concluir o pagamento no portal, o CONTRATANTE declara que leu, compreendeu e concorda integralmente com este Termo.</p>
+
+        <h4>1. Objeto</h4>
+        <p>1.1. Este Termo regula a prestação dos seguintes serviços, conforme o plano/itens contratados no ato da compra: hospedagem de sites e e-mails em ambiente cPanel (servidores compartilhados); servidores dedicados cPanel/WHM (recursos exclusivos) com serviços adicionais de administração, quando contratados; licenciamento e gestão de e-mail corporativo Zoho (revenda/parceria), quando contratado.</p>
+        <p>1.2. O escopo exato (recursos, limites, valores, periodicidade e adicionais) é aquele exibido no portal/proposta comercial na data da contratação e na fatura/ordem de serviço correspondente.</p>
+
+        <h4>2. Planos, Recursos e Limites de Uso</h4>
+        <p>2.1. Os recursos variam conforme o plano contratado e podem ser alterados por upgrade/downgrade, quando disponível.</p>
+        <p>2.2. <strong>Hospedagem Compartilhada:</strong> ambiente compartilhado com limitação de CPU, RAM e I/O. Backups via cPanel são funcionalidades de apoio; o CONTRATANTE permanece responsável por manter cópias próprias.</p>
+        <p>2.3. <strong>Servidores Dedicados:</strong> recursos de hardware exclusivos conforme plano contratado. Suporte 24h aplica-se aos dedicados com administração Hostweb.</p>
+
+        <h4>3. Serviços Zoho (Revenda/Parceria)</h4>
+        <p>3.1. A Hostweb atua como revendedora/parceira. O serviço Zoho é prestado pela Zoho Corporation e está sujeito às políticas e limitações técnicas do fornecedor.</p>
+        <p>3.2. O armazenamento é por usuário/caixa postal conforme plano Zoho adquirido. Recursos e políticas do Zoho podem sofrer alterações pelo fornecedor.</p>
+
+        <h4>4. Disponibilidade (SLA)</h4>
+        <p>4.1. Hospedagem Compartilhada: SLA de referência de 99,5% ao mês. Servidores Dedicados administrados pela Hostweb: SLA de referência de 99,9% ao mês.</p>
+        <p>4.2. Em caso de indisponibilidade superior ao SLA, o CONTRATANTE poderá solicitar crédito proporcional mediante abertura de chamado em até 7 (sete) dias após o evento.</p>
+        <p>4.3. Não se consideram indisponibilidades: manutenções programadas, falhas de terceiros, ataques DDoS fora da capacidade de mitigação contratada, mau uso e incidentes fora do controle razoável da Hostweb.</p>
+
+        <h4>5. Pagamento, Renovação, Suspensão e Exclusão de Dados</h4>
+        <p>5.1. Os serviços são pré-pagos, com renovação conforme periodicidade escolhida (mensal/anual), cobrados via cartão de crédito/débito pela plataforma Stripe.</p>
+        <p>5.2. Em caso de atraso: após 3 dias do vencimento, o serviço poderá ser suspenso; após 15 dias, o serviço poderá ser cancelado e os dados poderão ser removidos.</p>
+        <p>5.3. Antes de qualquer remoção definitiva de dados, a Hostweb enviará comunicação ao e-mail cadastrado com antecedência mínima de 7 (sete) dias.</p>
+        <p>5.4. Cancelamentos de planos anuais antes do término podem gerar cobrança proporcional ou perda do desconto aplicado.</p>
+
+        <h4>6. Usos Proibidos e Abuso</h4>
+        <p>6.1. É proibido utilizar a infraestrutura Hostweb para: envio de spam, hospedagem de conteúdo ilegal, pirataria, phishing, malware, ataques, varreduras (scans) ou tráfego malicioso.</p>
+        <p>6.2. A Hostweb poderá suspender imediatamente o serviço em caso de risco à infraestrutura ou a terceiros.</p>
+
+        <h4>7. Segurança e Responsabilidades do Contratante</h4>
+        <p>7.1. O CONTRATANTE é responsável por: manter senhas fortes, guardar credenciais e controlar acessos; manter aplicações atualizadas; e pelo conteúdo hospedado e comunicações enviadas.</p>
+        <p>7.2. A Hostweb não se responsabiliza por incidentes decorrentes de má configuração, falhas de aplicações do CONTRATANTE ou senhas comprometidas.</p>
+
+        <h4>8. Proteção de Dados (LGPD)</h4>
+        <p>8.1. As partes comprometem-se a cumprir a Lei Geral de Proteção de Dados (Lei nº 13.709/2018 – LGPD).</p>
+        <p>8.2. Em regra, o CONTRATANTE é o Controlador dos dados pessoais tratados em seus sites/e-mails, e a Hostweb atua como Operadora.</p>
+        <p>8.3. Havendo incidente relevante com impacto em dados pessoais, a Hostweb comunicará o CONTRATANTE em prazo razoável.</p>
+
+        <h4>9. Rescisão e Portabilidade</h4>
+        <p>9.1. O CONTRATANTE pode solicitar cancelamento a qualquer tempo, observadas eventuais regras de fidelidade.</p>
+        <p>9.2. Mediante solicitação e estando adimplente, o CONTRATANTE poderá solicitar exportação de dados antes do encerramento.</p>
+
+        <h4>10. Disposições Gerais</h4>
+        <p>10.1. A Hostweb poderá atualizar este Termo para adequação técnica/jurídica, publicando versão atualizada no portal com indicação da nova versão.</p>
+        <p>10.2. Considera-se válido o e-mail cadastrado no portal para envio de notificações e avisos.</p>
+        <p>10.3. <strong>Foro:</strong> Comarca de Fortaleza/CE, com renúncia a qualquer outro, para dirimir eventuais controvérsias.</p>
+
+        <div class="termo-aviso">
+          <strong>📌 Registro do aceite:</strong> Ao aceitar digitalmente, ficam registrados timestamp UTC (ISO 8601), IP de origem, User-Agent do navegador, CPF/CNPJ, e-mail e identificador do pedido, formando prova eletrônica do aceite nos termos da <strong>MP 2.200-2/2001</strong>, <strong>Lei 14.063/2020</strong>, <strong>Marco Civil da Internet (Lei 12.965/2014)</strong> e <strong>LGPD (Lei 13.709/2018)</strong>.
+        </div>
+
+      </div>
+      <div class="scroll-indicator" id="scroll-indicator">⬇ Role para ler o termo completo</div>
+    </section>
+
+    <!-- COLUNA DIREITA: FORMULÁRIO -->
+    <section class="form-box">
+      <h2 class="box-title">✍️ Dados do Contratante</h2>
+
+      <form id="aceite-form" novalidate>
+
+        <!-- plan_id oculto — preenchido pela URL ou pelo select abaixo -->
+        <input type="hidden" id="plan_id" name="plan_id" value="{{ plan_id }}" />
+
+        <div class="form-group">
+          <label for="nome">Nome completo <span class="req">*</span></label>
+          <input type="text" id="nome" name="nome"
+                 placeholder="João da Silva" required
+                 value="{{ nome }}" />
+        </div>
+
+        <div class="form-group">
+          <label for="email">E-mail <span class="req">*</span></label>
+          <input type="email" id="email" name="email"
+                 placeholder="joao@empresa.com.br" required
+                 value="{{ email }}" />
+        </div>
+
+        <div class="form-group">
+          <label for="cpf_cnpj">CPF ou CNPJ <span class="req">*</span></label>
+          <input type="text" id="cpf_cnpj" name="cpf_cnpj"
+                 placeholder="000.000.000-00 ou 00.000.000/0001-00" required />
+        </div>
+
+        <div class="form-group">
+          <label for="empresa">Empresa / Razão Social</label>
+          <input type="text" id="empresa" name="empresa"
+                 placeholder="Empresa LTDA (opcional)"
+                 value="{{ empresa }}" />
+        </div>
+
+        <!-- Select de plano — oculto quando plan_id já vem da URL -->
+        <div class="form-group" id="plano-group" {% if plan_id %}style="display:none"{% endif %}>
+          <label for="plano">Plano Contratado <span class="req">*</span></label>
+          <select id="plano" name="plano" {% if plan_id %}disabled{% endif %}>
+            <option value="">— Selecione o plano —</option>
+            <optgroup label="Hospedagem Compartilhada">
+              <option value="starter_mensal">Starter — Mensal (R$39,90/mês)</option>
+              <option value="starter_anual">Starter — Anual (R$33,92/mês)</option>
+              <option value="business_mensal">Business — Mensal (R$69,90/mês)</option>
+              <option value="business_anual">Business — Anual (R$59,42/mês)</option>
+              <option value="business_plus_mensal">Business Plus — Mensal (R$99,90/mês)</option>
+              <option value="business_plus_anual">Business Plus — Anual (R$84,92/mês)</option>
+              <option value="enterprise_mensal">Enterprise — Mensal (R$149,90/mês)</option>
+              <option value="enterprise_anual">Enterprise — Anual (R$127,42/mês)</option>
+            </optgroup>
+            <optgroup label="Servidor Dedicado">
+              <option value="ded_essencial_mensal">Dedicado Essencial (R$499,00/mês)</option>
+              <option value="ded_profissional_mensal">Dedicado Profissional (R$799,00/mês)</option>
+              <option value="ded_enterprise_mensal">Dedicado Enterprise (R$1.299,00/mês)</option>
+            </optgroup>
+            <optgroup label="E-mail Corporativo Zoho">
+              <option value="zoho_mail_lite_5_mensal">Zoho Mail Lite 5GB (R$95,00/usuário/ano)</option>
+              <option value="zoho_mail_lite_10_mensal">Zoho Mail Lite 10GB (R$152,00/usuário/ano)</option>
+              <option value="zoho_mail_premium_mensal">Zoho Mail Premium (R$285,00/usuário/ano)</option>
+              <option value="zoho_workplace_std_mensal">Zoho Workplace Padrão (R$190,00/usuário/ano)</option>
+              <option value="zoho_workplace_pro_mensal">Zoho Workplace Profissional (R$380,00/usuário/ano)</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <!-- CHECKBOXES OBRIGATÓRIOS -->
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="aceito" name="aceito" required />
+            <span>
+              Li e aceito integralmente os
+              <a href="/termos.html" target="_blank" class="termos-link">Termos de Uso e Política de Privacidade</a>
+              da Hostweb, versão <strong>{{ versao_termos }}</strong>.
+            </span>
+          </label>
+        </div>
+
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="lgpd" name="lgpd" required />
+            <span>
+              Autorizo o tratamento dos meus dados pessoais pela Hostweb conforme
+              a <strong>LGPD (Lei 13.709/2018)</strong> para execução, gestão e
+              comunicações referentes ao contrato.
+            </span>
+          </label>
+        </div>
+
+        <div id="form-erro" class="form-erro" style="display:none"></div>
+
+        <!-- BOTÃO PRINCIPAL — texto sem ambiguidade jurídica (CDC art. 46) -->
+        <button type="submit" class="btn-aceitar" id="btn-aceitar">
+          Concordo e quero contratar
+        </button>
+
+        <p class="form-nota">
+          Ao clicar, seus dados de aceite — timestamp UTC, IP, User-Agent, CPF/CNPJ —
+          serão registrados conforme o <strong>Marco Civil da Internet</strong> e a
+          <strong>LGPD</strong>. Você receberá confirmação por e-mail.
+        </p>
+
+      </form>
+
+      <!-- CAIXA DE SUCESSO (exibida após aceite, antes do redirect Stripe) -->
+      <div id="sucesso-box" class="sucesso-box" style="display:none">
+        <div class="sucesso-icon">✅</div>
+        <h3>Aceite registrado com sucesso!</h3>
+        <p>Protocolo único de auditoria:</p>
+        <p class="protocolo-display" id="protocolo-display"></p>
+        <p class="sucesso-info">
+          Um e-mail de confirmação foi enviado para o endereço informado.<br>
+          Redirecionando para o pagamento seguro via Stripe…
+        </p>
+        <div class="sucesso-loader"><div class="loader-bar"></div></div>
+      </div>
+
+      <!-- INFO LEGAL -->
+      <div class="info-legal">
+        <h4>🔐 Dados registrados neste aceite</h4>
+        <ul>
+          <li>✅ <strong>Timestamp UTC ISO 8601</strong> — base para registros legais</li>
+          <li>✅ <strong>IP do contratante</strong> — Marco Civil da Internet art. 10</li>
+          <li>✅ <strong>User-Agent do navegador</strong> — identificação do dispositivo</li>
+          <li>✅ <strong>Versão dos termos</strong> ({{ versao_termos }}) — rastreabilidade</li>
+          <li>✅ <strong>Hash SHA-256</strong> do texto — prova de integridade</li>
+          <li>✅ <strong>E-mail e CPF/CNPJ</strong> — identificação do contratante</li>
+          <li>✅ <strong>Protocolo único HW-XXXXXXXXXX</strong> — auditável</li>
+        </ul>
+      </div>
+
+    </section>
+  </div>
+
+  <footer class="footer">
+    <p>© 2026 Hostweb Data Center e Serviços LTDA EPP — CNPJ: 07.797.967/0001-60</p>
+    <p>Foro: Comarca de Fortaleza/CE · jurídico@hostweb.com.br · (85) 3288-2062</p>
+  </footer>
+
+</div>
+
+<script src="/static/js/aceite.js"></script>
+</body>
+</html>

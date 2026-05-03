@@ -1,0 +1,9 @@
+flask==3.0.3
+flask-cors==4.0.1
+python-dotenv==1.0.1
+stripe==9.12.0
+psycopg2-binary==2.9.9
+gunicorn==22.0.0
+reportlab==4.2.2
+qrcode[pil]==7.4.2
+pytz==2024.1
