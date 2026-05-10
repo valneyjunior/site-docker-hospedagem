@@ -56,7 +56,7 @@ IMPORTANTE: Este Termo de Aceite Digital ("Termo") regula as condições para co
 2. PLANOS, RECURSOS E LIMITES DE USO
 2.1. Os recursos variam conforme o plano contratado e podem ser alterados por upgrade/downgrade, quando disponível.
 2.2. Hospedagem Compartilhada: ambiente compartilhado com limitação de CPU, RAM e I/O. Backups via cPanel são funcionalidades de apoio; o CONTRATANTE permanece responsável por manter cópias próprias.
-2.3. Servidores Dedicados: recursos de hardware exclusivos conforme plano contratado. Suporte 24h aplica-se aos dedicados com administração Hostweb.
+2.3. Servidores Dedicados: recursos de hardware exclusivos conforme plano contratado. O suporte técnico está disponível em horário comercial, de segunda a sexta-feira, das 8h às 18h (BRT), salvo acordos específicos de nível de serviço (SLA) distintos formalizados em contrato.
 
 3. SERVIÇOS ZOHO (REVENDA/PARCERIA)
 3.1. A Hostweb atua como revendedora/parceira. O serviço Zoho é prestado pela Zoho Corporation e está sujeito às políticas e limitações técnicas do fornecedor.
@@ -90,10 +90,17 @@ IMPORTANTE: Este Termo de Aceite Digital ("Termo") regula as condições para co
 9.1. O CONTRATANTE pode solicitar cancelamento a qualquer tempo, observadas eventuais regras de fidelidade.
 9.2. Mediante solicitação e estando adimplente, o CONTRATANTE poderá solicitar exportação de dados antes do encerramento.
 
-10. DISPOSIÇÕES GERAIS
-10.1. A Hostweb poderá atualizar este Termo para adequação técnica/jurídica, publicando versão atualizada no portal com indicação da nova versão.
-10.2. Considera-se válido o e-mail cadastrado no portal para envio de notificações e avisos.
-10.3. Foro: Comarca de Fortaleza/CE, com renúncia a qualquer outro, para dirimir eventuais controvérsias.
+10. SEGURANÇA DA INFORMAÇÃO (ISO 27001)
+10.1. A Hostweb opera conforme os requisitos da norma ABNT NBR ISO/IEC 27001, mantendo um Sistema de Gestão de Segurança da Informação (SGSI) certificado, com controles aplicados à confidencialidade, integridade e disponibilidade das informações.
+10.2. Os controles de segurança abrangem: gestão de ativos, controle de acesso lógico e físico, criptografia de dados em trânsito e em repouso, gestão de vulnerabilidades, monitoramento contínuo de eventos e procedimentos formalizados de resposta a incidentes.
+10.3. Incidentes de segurança que possam afetar os dados do CONTRATANTE serão notificados em até 72 horas a partir da ciência do evento, conforme exigências da LGPD (Lei 13.709/2018) e boas práticas da ISO 27001.
+10.4. O CONTRATANTE compromete-se a não realizar ações que comprometam a integridade, a confidencialidade ou a disponibilidade dos sistemas e da infraestrutura compartilhada, sob pena de suspensão imediata e responsabilização civil e criminal.
+10.5. A Hostweb realiza auditorias internas e externas periódicas como parte do ciclo de melhoria contínua do SGSI, assegurando a conformidade permanente com os controles da norma.
+
+11. DISPOSIÇÕES GERAIS
+11.1. A Hostweb poderá atualizar este Termo para adequação técnica/jurídica, publicando versão atualizada no portal com indicação da nova versão.
+11.2. Considera-se válido o e-mail cadastrado no portal para envio de notificações e avisos.
+11.3. Foro: Comarca de Fortaleza/CE, com renúncia a qualquer outro, para dirimir eventuais controvérsias.
 
 Registro do aceite: Ao aceitar digitalmente, ficam registrados data/hora UTC (ISO 8601), IP, User-Agent, CPF/CNPJ, identificador do pedido e e-mail do CONTRATANTE, formando prova eletrônica do aceite nos termos da MP 2.200-2/2001, Lei 14.063/2020, Marco Civil da Internet (Lei 12.965/2014) e LGPD (Lei 13.709/2018).
 """
@@ -427,13 +434,14 @@ def confirmar_aceite():
 
     success_url = os.getenv(
         "SUCCESS_URL",
-        "http://localhost/sucesso.html?session_id={CHECKOUT_SESSION_ID}"
+        "http://localhost/sucesso?session_id={CHECKOUT_SESSION_ID}"
     )
     cancel_url = os.getenv("CANCEL_URL", "http://localhost/?cancelado=1")
 
+    stripe_mode = plan_info.get("mode", "subscription")
     try:
         session = stripe.checkout.Session.create(
-            mode="subscription",
+            mode=stripe_mode,
             line_items=[{"price": price_id, "quantity": 1}],
             success_url=success_url,
             cancel_url=cancel_url,

@@ -3,494 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hostweb — Planos de Hospedagem & E-mail 2026</title>
+  <title>Hostweb — Hospedagem e E-mail Corporativo</title>
   <meta name="description" content="Hospedagem cPanel, e-mail Zoho e domínios com infraestrutura Data Center Tier III em Fortaleza.">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-  <style>
-:root {
-  --red: #e8001c;
-  --red-dark: #b5001a;
-  --purple: #6b0fa8;
-  --purple-dark: #4a0a7a;
-  --gradient: linear-gradient(135deg, #e8001c 0%, #6b0fa8 100%);
-  --white: #fff;
-  --gray-bg: #f5f5f7;
-  --gray-text: #666;
-  --dark: #1a1a2e;
-  --card-shadow: 0 4px 24px rgba(107,15,168,.12);
-}
-
-*, *::before, *::after {
-  margin: 0; padding: 0; box-sizing: border-box;
-}
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  background: #fff; color: #222; overflow-x: hidden;
-}
-
-/* ── TOP BAR ── */
-.top-bar {
-  background: var(--gradient); padding: 8px 5%;
-  display: flex; justify-content: space-between; align-items: center;
-}
-.top-bar-left {
-  color: rgba(255,255,255,.85); font-size: .78rem;
-  display: flex; align-items: center; gap: 16px;
-}
-.top-bar-left a { color: rgba(255,255,255,.85); text-decoration: none; }
-.top-bar-left a:hover { color: #fff; }
-.top-bar-right { display: flex; gap: 14px; }
-.top-bar-right a {
-  color: rgba(255,255,255,.8); font-size: .95rem;
-  text-decoration: none; transition: .2s;
-}
-.top-bar-right a:hover { color: #fff; }
-
-/* ── NAVBAR ── */
-nav {
-  background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,.08);
-  position: sticky; top: 0; z-index: 999;
-  padding: 0 5%; display: flex; align-items: center;
-  justify-content: space-between; height: 64px;
-}
-.nav-logo img { height: 60px; object-fit: contain; }
-.nav-links { display: flex; gap: 24px; list-style: none; }
-.nav-links a {
-  color: #333; text-decoration: none; font-size: .88rem;
-  font-weight: 500; transition: .2s; padding: 4px 0;
-  border-bottom: 2px solid transparent;
-}
-.nav-links a:hover { color: var(--red); border-bottom-color: var(--red); }
-.nav-cta {
-  background: var(--gradient); color: #fff; border: none;
-  padding: 10px 22px; border-radius: 6px; font-weight: 700;
-  cursor: pointer; font-size: .88rem; transition: .2s;
-  text-decoration: none; white-space: nowrap;
-}
-.nav-cta:hover { opacity: .88; transform: translateY(-1px); }
-
-/* ── HERO ── */
-.hero {
-  background: var(--gradient); min-height: 88vh;
-  display: flex; align-items: center;
-  padding: 80px 5% 60px; position: relative; overflow: hidden;
-}
-.hero::after {
-  content: ''; position: absolute; right: -5%; top: 0; bottom: 0;
-  width: 55%; background: rgba(0,0,0,.15);
-  clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
-  pointer-events: none;
-}
-.hero-content { position: relative; z-index: 2; max-width: 600px; }
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3);
-  color: #fff; padding: 6px 18px; border-radius: 50px;
-  font-size: .78rem; font-weight: 600; margin-bottom: 24px; letter-spacing: .5px;
-}
-.hero h1 {
-  font-size: clamp(2rem, 4.5vw, 3.4rem); font-weight: 800;
-  line-height: 1.15; color: #fff; margin-bottom: 18px;
-}
-.hero h1 span { font-weight: 400; }
-.hero p {
-  font-size: 1.05rem; color: rgba(255,255,255,.85);
-  margin-bottom: 36px; line-height: 1.7; max-width: 520px;
-}
-.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
-.btn-white {
-  background: #fff; color: var(--red); padding: 13px 28px;
-  border-radius: 7px; font-weight: 700; font-size: .95rem;
-  text-decoration: none; transition: .2s; border: none; cursor: pointer;
-  box-shadow: 0 4px 20px rgba(0,0,0,.2);
-}
-.btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,.25); }
-.btn-ghost {
-  background: transparent; color: #fff; padding: 13px 28px;
-  border-radius: 7px; font-weight: 600; font-size: .95rem;
-  text-decoration: none; transition: .2s;
-  border: 2px solid rgba(255,255,255,.5); cursor: pointer;
-}
-.btn-ghost:hover { background: rgba(255,255,255,.1); border-color: #fff; }
-.hero-payment {
-  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-  margin-top: 20px; margin-bottom: 4px;
-}
-.pay-item {
-  color: rgba(255,255,255,.82); font-size: .8rem;
-  display: flex; align-items: center; gap: 6px;
-}
-.pay-item i { font-size: .85rem; }
-.pay-sep { color: rgba(255,255,255,.35); font-size: .85rem; }
-.hero-certs { display: flex; gap: 16px; margin-top: 22px; flex-wrap: wrap; }
-.cert-badge {
-  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25);
-  border-radius: 8px; padding: 8px 14px;
-  display: flex; align-items: center; gap: 8px;
-}
-.cert-badge .cert-icon {
-  width: 28px; height: 28px; background: var(--red); border-radius: 5px;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 900; font-size: .7rem; color: #fff;
-}
-.cert-badge span { color: rgba(255,255,255,.9); font-size: .75rem; font-weight: 600; }
-
-/* ── STATS BAR ── */
-.stats-bar {
-  background: #fff; border-bottom: 1px solid #eee;
-  padding: 28px 5%; display: flex; justify-content: center;
-  gap: 60px; flex-wrap: wrap; box-shadow: 0 4px 20px rgba(0,0,0,.06);
-}
-.stat { text-align: center; }
-.stat-num {
-  font-size: 1.9rem; font-weight: 800;
-  background: var(--gradient);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.stat-label { font-size: .78rem; color: var(--gray-text); margin-top: 2px; }
-
-/* ── SECTIONS ── */
-section { padding: 80px 5%; }
-.section-header { text-align: center; margin-bottom: 56px; }
-.section-tag {
-  display: inline-block;
-  background: linear-gradient(135deg, rgba(232,0,28,.08), rgba(107,15,168,.08));
-  color: var(--purple); border: 1px solid rgba(107,15,168,.2);
-  padding: 5px 16px; border-radius: 50px; font-size: .75rem;
-  font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 14px;
-}
-.section-header h2 {
-  font-size: clamp(1.7rem, 3vw, 2.4rem); font-weight: 800;
-  margin-bottom: 12px; color: var(--dark);
-}
-.section-header h2 span {
-  background: var(--gradient);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.section-header p {
-  color: var(--gray-text); font-size: .95rem;
-  max-width: 540px; margin: 0 auto; line-height: 1.7;
-}
-
-/* ── TABS ── */
-.tabs-wrapper { display: flex; justify-content: center; margin-bottom: 44px; }
-.tabs {
-  display: flex; background: #f0f0f5; border-radius: 12px;
-  padding: 5px; gap: 4px;
-}
-.tab-btn {
-  padding: 10px 26px; border-radius: 8px; border: none;
-  cursor: pointer; font-size: .88rem; font-weight: 600;
-  transition: .25s; color: #666; background: transparent;
-}
-.tab-btn.active {
-  background: var(--gradient); color: #fff;
-  box-shadow: 0 2px 12px rgba(232,0,28,.3);
-}
-.tab-btn:hover:not(.active) { color: #333; background: rgba(0,0,0,.05); }
-.tab-panel { display: none; }
-.tab-panel.active { display: block; }
-
-/* ── BILLING TOGGLE ── */
-.billing-toggle {
-  display: flex; align-items: center; justify-content: center;
-  gap: 14px; margin-bottom: 36px;
-}
-.toggle-label { font-size: .9rem; color: #888; }
-.toggle-label.active { color: #222; font-weight: 700; }
-.toggle-switch {
-  width: 50px; height: 27px; background: #ddd;
-  border-radius: 50px; position: relative; cursor: pointer; transition: .3s;
-}
-.toggle-switch.on { background: var(--gradient); }
-.toggle-knob {
-  position: absolute; top: 3px; left: 3px;
-  width: 21px; height: 21px; background: #fff; border-radius: 50%;
-  transition: .3s; box-shadow: 0 1px 4px rgba(0,0,0,.2);
-}
-.toggle-switch.on .toggle-knob { left: 26px; }
-.discount-badge {
-  background: linear-gradient(135deg, rgba(0,180,80,.1), rgba(0,180,80,.05));
-  color: #00a050; border: 1px solid rgba(0,180,80,.25);
-  padding: 3px 12px; border-radius: 50px; font-size: .72rem; font-weight: 700;
-}
-
-/* ── PLAN CARDS ── */
-.plans-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px; max-width: 1200px; margin: 0 auto;
-}
-.plan-card {
-  background: #fff; border: 2px solid #eee; border-radius: 16px;
-  padding: 32px 26px; position: relative; transition: .3s;
-  display: flex; flex-direction: column;
-  box-shadow: 0 2px 12px rgba(0,0,0,.04);
-}
-.plan-card:hover {
-  border-color: var(--red); transform: translateY(-6px);
-  box-shadow: 0 16px 48px rgba(232,0,28,.12);
-}
-.plan-card.featured {
-  border-color: var(--purple);
-  background: linear-gradient(160deg, #fdf5ff 0%, #fff5f7 100%);
-  box-shadow: 0 8px 40px rgba(107,15,168,.15);
-}
-.plan-card.featured:hover { box-shadow: 0 20px 60px rgba(107,15,168,.25); }
-.badge-popular {
-  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
-  background: var(--gradient); color: #fff; font-size: .7rem;
-  font-weight: 700; padding: 4px 18px; border-radius: 50px;
-  letter-spacing: .5px; white-space: nowrap;
-}
-.plan-name { font-size: 1.05rem; font-weight: 800; color: var(--dark); margin-bottom: 5px; }
-.plan-desc { font-size: .8rem; color: var(--gray-text); margin-bottom: 18px; line-height: 1.5; }
-.plan-price { margin-bottom: 20px; }
-.plan-price .from { font-size: .72rem; color: #999; display: block; margin-bottom: 2px; }
-.plan-price .currency {
-  font-size: .95rem; color: var(--red); vertical-align: top;
-  margin-top: 5px; display: inline-block; font-weight: 700;
-}
-.plan-price .amount { font-size: 2.6rem; font-weight: 900; line-height: 1; color: var(--red); }
-.plan-price .cents { font-size: 1.4rem; font-weight: 900; color: var(--red); }
-.plan-price .period { font-size: .78rem; color: #999; }
-.plan-divider { height: 1px; background: #f0f0f0; margin: 18px 0; }
-.plan-features { list-style: none; flex: 1; }
-.plan-features li {
-  display: flex; align-items: flex-start; gap: 9px;
-  font-size: .84rem; color: #444; margin-bottom: 10px; line-height: 1.4;
-}
-.plan-features li i { color: var(--purple); font-size: .75rem; margin-top: 3px; flex-shrink: 0; }
-.plan-btn {
-  display: block; text-align: center; margin-top: 22px; padding: 12px;
-  border-radius: 8px; font-weight: 700; font-size: .88rem;
-  text-decoration: none; transition: .2s; cursor: pointer; border: none; width: 100%;
-}
-.plan-btn-primary {
-  background: var(--gradient); color: #fff;
-  box-shadow: 0 4px 16px rgba(232,0,28,.25);
-}
-.plan-btn-primary:hover { opacity: .88; transform: translateY(-1px); }
-.plan-btn-outline {
-  background: transparent; color: var(--purple);
-  border: 2px solid var(--purple);
-}
-.plan-btn-outline:hover { background: var(--gradient); color: #fff; border-color: transparent; }
-
-/* ── ZOHO ── */
-.zoho-section { background: var(--gray-bg); }
-.zoho-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px; max-width: 1200px; margin: 0 auto;
-}
-.zoho-card {
-  background: #fff; border: 2px solid #eee; border-radius: 14px;
-  padding: 26px 20px; transition: .3s; display: flex; flex-direction: column;
-  box-shadow: 0 2px 8px rgba(0,0,0,.04);
-}
-.zoho-card:hover {
-  border-color: var(--purple); transform: translateY(-4px);
-  box-shadow: 0 12px 36px rgba(107,15,168,.12);
-}
-.zoho-card.featured { border-color: var(--red); }
-.zoho-icon { font-size: 2rem; margin-bottom: 10px; }
-.zoho-name { font-size: .95rem; font-weight: 800; color: var(--dark); margin-bottom: 3px; }
-.zoho-storage { font-size: .75rem; color: var(--purple); font-weight: 600; margin-bottom: 12px; }
-.zoho-price-box {
-  background: linear-gradient(135deg, rgba(232,0,28,.05), rgba(107,15,168,.05));
-  border-radius: 8px; padding: 12px; margin-bottom: 14px;
-  border: 1px solid rgba(107,15,168,.1);
-}
-.zoho-price-label { font-size: .65rem; color: #999; text-transform: uppercase; letter-spacing: .5px; }
-.zoho-price-val { font-size: 1.35rem; font-weight: 900; color: var(--red); }
-.zoho-price-period { font-size: .68rem; color: #999; }
-.zoho-features { list-style: none; flex: 1; }
-.zoho-features li {
-  font-size: .78rem; color: #555; margin-bottom: 7px;
-  display: flex; gap: 7px; align-items: flex-start;
-}
-.zoho-features li i { color: var(--purple); font-size: .68rem; margin-top: 2px; }
-.zoho-btn {
-  display: block; text-align: center; margin-top: 16px; padding: 10px;
-  border-radius: 7px; font-weight: 700; font-size: .82rem;
-  text-decoration: none; transition: .2s; cursor: pointer;
-  border: 2px solid var(--purple); background: transparent; color: var(--purple); width: 100%;
-}
-.zoho-btn:hover { background: var(--gradient); color: #fff; border-color: transparent; }
-.zoho-btn.primary { background: var(--gradient); color: #fff; border: none; }
-.zoho-btn.primary:hover { opacity: .88; }
-
-/* ── DOMAIN TABLE ── */
-.domain-wrapper {
-  max-width: 720px; margin: 0 auto; background: #fff;
-  border-radius: 20px; box-shadow: var(--card-shadow);
-  overflow: hidden; border: 1px solid #eee;
-}
-.domain-table { width: 100%; border-collapse: collapse; }
-.domain-table th {
-  text-align: left; padding: 14px 20px; font-size: .75rem;
-  color: #999; text-transform: uppercase; letter-spacing: .5px;
-  background: #fafafa; border-bottom: 1px solid #eee;
-}
-.domain-table td { padding: 15px 20px; font-size: .9rem; border-bottom: 1px solid #f5f5f5; }
-.domain-table tr:last-child td { border-bottom: none; }
-.domain-table tr:hover td { background: #fdf5ff; }
-.domain-ext { font-weight: 800; color: var(--purple); }
-.domain-price { font-weight: 700; color: var(--red); }
-
-/* ── WHY SECTION ── */
-.why-section { background: var(--gradient); padding: 80px 5%; }
-.why-section .section-header h2 { color: #fff; }
-.why-section .section-header h2 span {
-  -webkit-text-fill-color: #fff; background: none;
-}
-.why-section .section-header p { color: rgba(255,255,255,.8); }
-.why-section .section-tag {
-  background: rgba(255,255,255,.15); color: #fff;
-  border-color: rgba(255,255,255,.3);
-}
-.why-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px; max-width: 1100px; margin: 0 auto;
-}
-.why-card {
-  background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
-  border-radius: 14px; padding: 26px 22px; text-align: center;
-  transition: .3s; backdrop-filter: blur(4px);
-}
-.why-card:hover { background: rgba(255,255,255,.18); transform: translateY(-4px); }
-.why-icon {
-  width: 54px; height: 54px; border-radius: 14px; margin: 0 auto 14px;
-  display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
-  background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25);
-}
-.why-card h3 { font-size: .95rem; font-weight: 700; margin-bottom: 7px; color: #fff; }
-.why-card p { font-size: .8rem; color: rgba(255,255,255,.78); line-height: 1.6; }
-
-/* ── CTA SECTION ── */
-.cta-section { background: #fff; padding: 80px 5%; }
-.cta-banner {
-  background: var(--dark); border-radius: 20px; padding: 60px 40px;
-  text-align: center; max-width: 900px; margin: 0 auto;
-  position: relative; overflow: hidden;
-}
-.cta-banner::before {
-  content: ''; position: absolute; inset: 0;
-  background: var(--gradient); opacity: .08;
-}
-.cta-banner h2 {
-  font-size: clamp(1.6rem, 3vw, 2.3rem); font-weight: 800;
-  color: #fff; margin-bottom: 12px; position: relative;
-}
-.cta-banner p {
-  color: rgba(255,255,255,.65); margin-bottom: 32px;
-  font-size: .95rem; position: relative;
-}
-.cta-btns {
-  display: flex; gap: 14px; justify-content: center;
-  flex-wrap: wrap; position: relative;
-}
-
-/* ── ACEITE DIGITAL ── 
-.aceite-section { background: var(--gray-bg); }
-.aceite-box {
-  max-width: 800px; margin: 0 auto; background: #fff;
-  border-radius: 20px; padding: 40px; box-shadow: var(--card-shadow);
-  border: 1px solid #eee;
-}
-.aceite-box h3 { font-size: 1.1rem; font-weight: 800; color: var(--dark); margin-bottom: 16px; }
-.aceite-box p { font-size: .88rem; color: #555; line-height: 1.8; margin-bottom: 12px; }
-.aceite-box ul { list-style: none; padding: 0; }
-.aceite-box ul li {
-  font-size: .85rem; color: #444; padding: 8px 0;
-  border-bottom: 1px solid #f5f5f5; display: flex; gap: 10px; align-items: flex-start;
-}
-.aceite-box ul li i { color: var(--purple); margin-top: 2px; } */
-
-/* ── FOOTER ── */
-footer { background: var(--dark); padding: 52px 5% 28px; }
-.footer-grid {
-  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 40px; margin-bottom: 40px;
-}
-.footer-brand p {
-  color: rgba(255,255,255,.5); font-size: .82rem;
-  line-height: 1.7; margin-top: 10px; max-width: 280px;
-}
-.footer-logo img { height: 36px; filter: brightness(0) invert(1); object-fit: contain; }
-.footer-col h4 {
-  font-size: .8rem; font-weight: 700; color: #fff;
-  margin-bottom: 14px; text-transform: uppercase; letter-spacing: .5px;
-}
-.footer-col ul { list-style: none; }
-.footer-col ul li { margin-bottom: 8px; }
-.footer-col ul li a {
-  color: rgba(255,255,255,.5); text-decoration: none;
-  font-size: .82rem; transition: .2s;
-}
-.footer-col ul li a:hover { color: #fff; }
-.footer-bottom {
-  border-top: 1px solid rgba(255,255,255,.08); padding-top: 24px;
-  display: flex; justify-content: space-between; align-items: center;
-  flex-wrap: wrap; gap: 12px;
-}
-.footer-bottom p { color: rgba(255,255,255,.35); font-size: .75rem; }
-.social-links { display: flex; gap: 10px; }
-.social-link {
-  width: 34px; height: 34px; border-radius: 8px;
-  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
-  display: flex; align-items: center; justify-content: center;
-  color: rgba(255,255,255,.5); text-decoration: none; font-size: .85rem; transition: .2s;
-}
-.social-link:hover { background: var(--gradient); color: #fff; border-color: transparent; }
-
-/* ── WHATSAPP FLOAT ── */
-.whatsapp-float {
-  position: fixed; bottom: 28px; right: 28px; z-index: 1000;
-  display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
-}
-.whatsapp-btn {
-  width: 58px; height: 58px; background: #25d366; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  color: #fff; font-size: 1.6rem; text-decoration: none;
-  box-shadow: 0 4px 20px rgba(37,211,102,.45); transition: .3s;
-  animation: pulse-wa 2.5s infinite;
-}
-.whatsapp-btn:hover { transform: scale(1.1); box-shadow: 0 8px 32px rgba(37,211,102,.6); }
-@keyframes pulse-wa {
-  0%, 100% { box-shadow: 0 4px 20px rgba(37,211,102,.45); }
-  50% { box-shadow: 0 4px 32px rgba(37,211,102,.75), 0 0 0 8px rgba(37,211,102,.1); }
-}
-.whatsapp-tooltip {
-  background: var(--dark); color: #fff; padding: 8px 14px;
-  border-radius: 8px; font-size: .78rem; font-weight: 600;
-  white-space: nowrap; box-shadow: 0 4px 16px rgba(0,0,0,.2);
-  opacity: 0; transform: translateX(10px); transition: .3s; pointer-events: none;
-}
-.whatsapp-float:hover .whatsapp-tooltip { opacity: 1; transform: translateX(0); }
-.whatsapp-row { display: flex; align-items: center; gap: 10px; }
-
-/* ── RESPONSIVE ── */
-@media (max-width: 900px) {
-  .nav-links { display: none; }
-  .footer-grid { grid-template-columns: 1fr 1fr; }
-  .hero::after { display: none; }
-}
-@media (max-width: 600px) {
-  .footer-grid { grid-template-columns: 1fr; }
-  .stats-bar { gap: 28px; }
-  .plans-grid { grid-template-columns: 1fr; }
-  .zoho-grid { grid-template-columns: 1fr 1fr; }
-  .cta-banner { padding: 40px 24px; }
-  .top-bar { display: none; }
-}
-@media (max-width: 420px) {
-  .zoho-grid { grid-template-columns: 1fr; }
-}
-
-  </style>
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
 
@@ -498,7 +14,7 @@ footer { background: var(--dark); padding: 52px 5% 28px; }
 <div class="top-bar">
   <div class="top-bar-left">
     <a href="tel:+558532882062"><i class="fas fa-phone"></i> (85) 3288-2062</a>
-    <a href="/cdn-cgi/l/email-protection#a5c6cac8c0d7c6ccc4c9e5cdcad6d1d2c0c78bc6cac88bc7d7"><i class="fas fa-envelope"></i> <span class="__cf_email__" data-cfemail="73101c1e1601101a121f331b1c00070416115d101c1e5d1101">[email&#160;protected]</span></a>
+    <a href="mailto:comercial@hostweb.com.br"><i class="fas fa-envelope"></i> comercial@hostweb.com.br</a>
   </div>
   <div class="top-bar-right">
     <a href="https://br.linkedin.com/company/hostweb-data-center-e-servicos" target="_blank"><i class="fab fa-linkedin-in"></i></a>
@@ -517,34 +33,23 @@ footer { background: var(--dark); padding: 52px 5% 28px; }
     <li><a href="#hospedagem">Hospedagem</a></li>
     <li><a href="#email">E-mail Corporativo</a></li>
     <li><a href="#dominios">Domínios</a></li>
-    <!--<li><a href="#aceite">Aceite Digital</a></li> -->
     <li><a href="termos.html" target="_blank">Termos de Uso</a></li>
     <li><a href="#diferenciais">Diferenciais</a></li>
   </ul>
-  <a href="#" class="nav-cta" onclick="openModal('Fale com Especialista','Geral');return false;">Fale com um Especialista</a>
+  <a href="https://wa.me/5585991293286" target="_blank" class="nav-cta">
+    <i class="fab fa-whatsapp"></i> Fale Conosco
+  </a>
 </nav>
 
 <!-- HERO -->
 <section class="hero" id="home">
   <div class="hero-content">
     <div class="hero-badge"><i class="fas fa-shield-halved"></i> Data Center Tier III · Fortaleza, CE</div>
-    <h1>Hospedagem e E-mail<br><span>Corporativo de</span><br><strong>Alta Performance</strong></h1>
-    <p>Infraestrutura própria certificada ISO/IEC 27001, suporte especializado e planos pensados para o crescimento do seu negócio.</p>
+    <h1>Hospedagem e E-mail<br>Corporativo com<br><strong>Alta Performance</strong></h1>
+    <p>Infraestrutura própria certificada ISO 27001, suporte especializado e planos pensados para o crescimento do seu negócio.</p>
     <div class="hero-btns">
-      <a href="#hospedagem" class="btn-white"><i class="fas fa-rocket" style="margin-right:8px"></i>Ver Planos</a>
-      <a href="https://wa.me/5585991293286" target="_blank" class="btn-ghost"><i class="fab fa-whatsapp" style="margin-right:8px"></i>WhatsApp</a>
-    </div>
-    <div class="hero-payment">
-      <span class="pay-item"><i class="fas fa-credit-card"></i> Cartão de crédito</span>
-      <span class="pay-sep">·</span>
-      <span class="pay-item"><i class="fas fa-lock"></i> Stripe — pagamento 100% seguro</span>
-      <span class="pay-sep">·</span>
-      <span class="pay-item"><i class="fas fa-clock"></i> Atendimento em até 4h úteis</span>
-    </div>
-    <div class="hero-certs">
-      <div class="cert-badge"><div class="cert-icon">Q</div><span>ISO/IEC 27001</span></div>
-      <div class="cert-badge"><div class="cert-icon">Q</div><span>ISO/IEC 27017</span></div>
-      <div class="cert-badge"><div class="cert-icon">Q</div><span>ISO/IEC 27018</span></div>
+      <a href="#hospedagem" class="btn-white"><i class="fas fa-rocket"></i> Ver Planos</a>
+      <a href="https://wa.me/5585991293286" target="_blank" class="btn-ghost"><i class="fab fa-whatsapp"></i> WhatsApp</a>
     </div>
   </div>
 </section>
@@ -553,9 +58,8 @@ footer { background: var(--dark); padding: 52px 5% 28px; }
 <div class="stats-bar">
   <div class="stat"><div class="stat-num">99,9%</div><div class="stat-label">Uptime Garantido</div></div>
   <div class="stat"><div class="stat-num">20+</div><div class="stat-label">Anos de Experiência</div></div>
-  <div class="stat"><div class="stat-num">4h</div><div class="stat-label">Tempo de Atendimento</div></div>
-  <div class="stat"><div class="stat-num">Stripe</div><div class="stat-label">Pagamento 100% Seguro</div></div>
-  <div class="stat"><div class="stat-num">Tier III</div><div class="stat-label">Certificação Data Center</div></div>
+  <div class="stat"><div class="stat-num">4h</div><div class="stat-label">SLA de Atendimento</div></div>
+  <div class="stat"><div class="stat-num">ISO 27001</div><div class="stat-label">Segurança Certificada</div></div>
 </div>
 
 <!-- HOSPEDAGEM -->
@@ -565,343 +69,424 @@ footer { background: var(--dark); padding: 52px 5% 28px; }
     <h2>Escolha o plano ideal para <span>o seu site</span></h2>
     <p>SSL gratuito, painel cPanel, suporte técnico e domínio incluso em todos os planos.</p>
   </div>
-  <div class="tabs-wrapper">
-    <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('compartilhado',this)"><i class="fas fa-share-nodes"></i> Compartilhado</button>
-      <button class="tab-btn" onclick="switchTab('dedicado',this)"><i class="fas fa-microchip"></i> Servidor Dedicado</button>
+
+  <div class="selector-bar">
+    <div class="hw-select" id="sel-hosting-period">
+      <button class="hw-select-btn" type="button">
+        <span class="hw-select-label">Período de contratação</span>
+        <span class="hw-select-val">Mensal</span>
+        <i class="fas fa-chevron-down hw-select-arrow"></i>
+      </button>
+      <ul class="hw-select-dropdown">
+        <li class="hw-select-item active" data-value="mensal" data-label="Mensal">Mensal</li>
+        <li class="hw-select-item" data-value="12m" data-label="12 meses">12 meses <span class="best-tag">-5%</span></li>
+        <li class="hw-select-item" data-value="24m" data-label="24 meses">24 meses <span class="best-tag">-10%</span></li>
+      </ul>
     </div>
   </div>
 
-  <!-- COMPARTILHADO -->
-  <div class="tab-panel active" id="tab-compartilhado">
-    <div class="billing-toggle">
-      <span class="toggle-label active" id="lbl-mensal">Mensal</span>
-      <div class="toggle-switch" id="toggle-billing" onclick="toggleBilling()"><div class="toggle-knob"></div></div>
-      <span class="toggle-label" id="lbl-anual">Anual</span>
-      <span class="discount-badge">🎉 Economize 15%</span>
-    </div>
-    <div class="plans-grid">
-      <div class="plan-card">
-        <div class="plan-name">🌱 Starter</div>
-        <div class="plan-desc">Ideal para sites institucionais e blogs</div>
-        <div class="plan-price">
-          <span class="from">A partir de</span>
-          <span class="currency">R$</span><span class="amount" id="p-starter">39</span><span class="cents" id="c-starter">,90</span><span class="period">/mês</span>
+  <!-- COMPARTILHADA -->
+  <div class="hw-subsection">
+    <div class="hw-subsection-title"><i class="fas fa-share-nodes"></i> Hospedagem Compartilhada</div>
+    <div class="hw-plans-grid">
+
+      <div class="hw-plan" data-section="hosting" data-base="39.90">
+        <span class="hw-disc-badge" style="display:none"></span>
+        <div class="hw-plan-name">Starter</div>
+        <div class="hw-plan-desc">Para sites institucionais e blogs</div>
+        <div class="hw-plan-pricing">
+          <del class="hw-plan-orig" style="visibility:hidden">R$ 39,90/mês</del>
+          <div class="hw-price-main">
+            <span class="hw-curr">R$</span><span class="hw-amount">39</span><span class="hw-cents">,90</span>
+          </div>
+          <div class="hw-period">/mês</div>
         </div>
-        <div class="plan-divider"></div>
-        <ul class="plan-features">
+        <button class="hw-cta hw-cta-outline" onclick="openModal('Starter','hosting')">Contratar Agora</button>
+        <div class="hw-divider"></div>
+        <ul class="hw-features">
           <li><i class="fas fa-check-circle"></i>20 GB de espaço em disco</li>
           <li><i class="fas fa-check-circle"></i>20 contas de e-mail</li>
-          <li><i class="fas fa-check-circle"></i>20 GB de e-mail storage</li>
-          <li><i class="fas fa-check-circle"></i>Bancos MySQL ilimitados</li>
           <li><i class="fas fa-check-circle"></i>SSL gratuito (Let's Encrypt)</li>
           <li><i class="fas fa-check-circle"></i>Painel cPanel completo</li>
           <li><i class="fas fa-check-circle"></i>Backup self-service</li>
           <li><i class="fas fa-check-circle"></i>Transferência ilimitada</li>
         </ul>
-        <button class="plan-btn plan-btn-outline" onclick="openModal('Starter','Hospedagem Compartilhada')">Contratar Agora</button>
       </div>
-      <div class="plan-card featured">
-        <div class="badge-popular">⭐ Mais Popular</div>
-        <div class="plan-name">💼 Business</div>
-        <div class="plan-desc">Para empresas em crescimento</div>
-        <div class="plan-price">
-          <span class="from">A partir de</span>
-          <span class="currency">R$</span><span class="amount" id="p-business">69</span><span class="cents" id="c-business">,90</span><span class="period">/mês</span>
+
+      <div class="hw-plan featured" data-section="hosting" data-base="69.90">
+        <div class="hw-pop-ribbon">Mais Popular</div>
+        <span class="hw-disc-badge" style="display:none"></span>
+        <div class="hw-plan-name">Business</div>
+        <div class="hw-plan-desc">Para empresas em crescimento</div>
+        <div class="hw-plan-pricing">
+          <del class="hw-plan-orig" style="visibility:hidden">R$ 69,90/mês</del>
+          <div class="hw-price-main">
+            <span class="hw-curr">R$</span><span class="hw-amount">69</span><span class="hw-cents">,90</span>
+          </div>
+          <div class="hw-period">/mês</div>
         </div>
-        <div class="plan-divider"></div>
-        <ul class="plan-features">
+        <button class="hw-cta hw-cta-fill" onclick="openModal('Business','hosting')">Contratar Agora</button>
+        <div class="hw-divider"></div>
+        <ul class="hw-features">
           <li><i class="fas fa-check-circle"></i>40 GB de espaço em disco</li>
           <li><i class="fas fa-check-circle"></i>50 contas de e-mail</li>
-          <li><i class="fas fa-check-circle"></i>50 GB de e-mail storage</li>
-          <li><i class="fas fa-check-circle"></i>Bancos MySQL ilimitados</li>
           <li><i class="fas fa-check-circle"></i>SSL gratuito (Let's Encrypt)</li>
           <li><i class="fas fa-check-circle"></i>Painel cPanel completo</li>
           <li><i class="fas fa-check-circle"></i>Backup self-service</li>
           <li><i class="fas fa-check-circle"></i>Transferência ilimitada</li>
         </ul>
-        <button class="plan-btn plan-btn-primary" onclick="openModal('Business','Hospedagem Compartilhada')">Contratar Agora</button>
       </div>
-      <div class="plan-card">
-        <div class="plan-name">📈 Business Plus</div>
-        <div class="plan-desc">Para lojas virtuais e portais</div>
-        <div class="plan-price">
-          <span class="from">A partir de</span>
-          <span class="currency">R$</span><span class="amount" id="p-bplus">99</span><span class="cents" id="c-bplus">,90</span><span class="period">/mês</span>
+
+      <div class="hw-plan" data-section="hosting" data-base="99.90">
+        <span class="hw-disc-badge" style="display:none"></span>
+        <div class="hw-plan-name">Business Plus</div>
+        <div class="hw-plan-desc">Para lojas virtuais e portais</div>
+        <div class="hw-plan-pricing">
+          <del class="hw-plan-orig" style="visibility:hidden">R$ 99,90/mês</del>
+          <div class="hw-price-main">
+            <span class="hw-curr">R$</span><span class="hw-amount">99</span><span class="hw-cents">,90</span>
+          </div>
+          <div class="hw-period">/mês</div>
         </div>
-        <div class="plan-divider"></div>
-        <ul class="plan-features">
+        <button class="hw-cta hw-cta-outline" onclick="openModal('Business Plus','hosting')">Contratar Agora</button>
+        <div class="hw-divider"></div>
+        <ul class="hw-features">
           <li><i class="fas fa-check-circle"></i>60 GB de espaço em disco</li>
           <li><i class="fas fa-check-circle"></i>80 contas de e-mail</li>
-          <li><i class="fas fa-check-circle"></i>80 GB de e-mail storage</li>
-          <li><i class="fas fa-check-circle"></i>Bancos MySQL ilimitados</li>
           <li><i class="fas fa-check-circle"></i>SSL gratuito (Let's Encrypt)</li>
           <li><i class="fas fa-check-circle"></i>Painel cPanel completo</li>
           <li><i class="fas fa-check-circle"></i>Backup self-service</li>
           <li><i class="fas fa-check-circle"></i>Transferência ilimitada</li>
         </ul>
-        <button class="plan-btn plan-btn-outline" onclick="openModal('Business Plus','Hospedagem Compartilhada')">Contratar Agora</button>
       </div>
-      <div class="plan-card">
-        <div class="plan-name">🏢 Enterprise</div>
-        <div class="plan-desc">Para grandes operações e múltiplos sites</div>
-        <div class="plan-price">
-          <span class="from">A partir de</span>
-          <span class="currency">R$</span><span class="amount" id="p-enterprise">149</span><span class="cents" id="c-enterprise">,90</span><span class="period">/mês</span>
+
+      <div class="hw-plan" data-section="hosting" data-base="149.90">
+        <span class="hw-disc-badge" style="display:none"></span>
+        <div class="hw-plan-name">Enterprise</div>
+        <div class="hw-plan-desc">Para grandes operações e múltiplos sites</div>
+        <div class="hw-plan-pricing">
+          <del class="hw-plan-orig" style="visibility:hidden">R$ 149,90/mês</del>
+          <div class="hw-price-main">
+            <span class="hw-curr">R$</span><span class="hw-amount">149</span><span class="hw-cents">,90</span>
+          </div>
+          <div class="hw-period">/mês</div>
         </div>
-        <div class="plan-divider"></div>
-        <ul class="plan-features">
+        <button class="hw-cta hw-cta-outline" onclick="openModal('Enterprise','hosting')">Contratar Agora</button>
+        <div class="hw-divider"></div>
+        <ul class="hw-features">
           <li><i class="fas fa-check-circle"></i>100 GB de espaço em disco</li>
           <li><i class="fas fa-check-circle"></i>150 contas de e-mail</li>
-          <li><i class="fas fa-check-circle"></i>150 GB de e-mail storage</li>
-          <li><i class="fas fa-check-circle"></i>Bancos MySQL ilimitados</li>
           <li><i class="fas fa-check-circle"></i>SSL gratuito (Let's Encrypt)</li>
           <li><i class="fas fa-check-circle"></i>Painel cPanel completo</li>
           <li><i class="fas fa-check-circle"></i>Backup self-service</li>
           <li><i class="fas fa-check-circle"></i>Transferência ilimitada</li>
         </ul>
-        <button class="plan-btn plan-btn-outline" onclick="openModal('Enterprise','Hospedagem Compartilhada')">Contratar Agora</button>
       </div>
+
     </div>
   </div>
 
   <!-- DEDICADO -->
-  <div class="tab-panel" id="tab-dedicado">
-    <div class="plans-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
-      <div class="plan-card">
-        <div class="plan-name">🖥️ Dedicado Essencial</div>
-        <div class="plan-desc">Para empresas com múltiplos domínios e alto volume de e-mails</div>
-        <div class="plan-price">
-          <span class="from">A partir de</span>
-          <span class="currency">R$</span><span class="amount">499</span><span class="cents">,00</span><span class="period">/mês</span>
+  <div class="hw-subsection hw-subsection-mt">
+    <div class="hw-subsection-title"><i class="fas fa-microchip"></i> Servidor Dedicado <span class="hw-subsection-note">sempre mensal</span></div>
+    <div class="hw-plans-grid">
+
+      <div class="hw-plan">
+        <div class="hw-plan-name">Dedicado Essencial</div>
+        <div class="hw-plan-desc">Para empresas com múltiplos domínios e alto volume de e-mails</div>
+        <div class="hw-plan-pricing">
+          <div class="hw-price-main">
+            <span class="hw-curr">R$</span><span class="hw-amount">499</span><span class="hw-cents">,00</span>
+          </div>
+          <div class="hw-period">/mês</div>
         </div>
-        <div class="plan-divider"></div>
-        <ul class="plan-features">
-          <li><i class="fas fa-check-circle"></i>200 GB SSD</li>
-          <li><i class="fas fa-check-circle"></i>Contas de e-mail ilimitadas</li>
-          <li><i class="fas fa-check-circle"></i>8 GB RAM · 4 vCPUs</li>
+        <button class="hw-cta hw-cta-outline" onclick="openModal('Dedicado Essencial','hosting')">Contratar Agora</button>
+        <div class="hw-divider"></div>
+        <ul class="hw-features">
+          <li><i class="fas fa-check-circle"></i>200 GB SSD · 8 GB RAM · 4 vCPUs</li>
+          <li><i class="fas fa-check-circle"></i>E-mails ilimitados</li>
           <li><i class="fas fa-check-circle"></i>WHM próprio (controle total)</li>
           <li><i class="fas fa-check-circle"></i>Backup automático diário</li>
           <li><i class="fas fa-check-circle"></i>Suporte técnico 24h</li>
-          <li><i class="fas fa-check-circle"></i>SSL gratuito incluso</li>
           <li><i class="fas fa-check-circle"></i>Migração Zimbra sem custo</li>
         </ul>
-        <button class="plan-btn plan-btn-outline" onclick="openModal('Dedicado Essencial','Servidor Dedicado')">Contratar Agora</button>
       </div>
-      <div class="plan-card featured">
-        <div class="badge-popular">🏆 Recomendado</div>
-        <div class="plan-name">🚀 Dedicado Profissional</div>
-        <div class="plan-desc">Alta performance para operações críticas</div>
-        <div class="plan-price">
-          <span class="from">A partir de</span>
-          <span class="currency">R$</span><span class="amount">799</span><span class="cents">,00</span><span class="period">/mês</span>
+
+      <div class="hw-plan featured">
+        <div class="hw-pop-ribbon">Recomendado</div>
+        <div class="hw-plan-name">Dedicado Profissional</div>
+        <div class="hw-plan-desc">Alta performance para operações críticas</div>
+        <div class="hw-plan-pricing">
+          <div class="hw-price-main">
+            <span class="hw-curr">R$</span><span class="hw-amount">799</span><span class="hw-cents">,00</span>
+          </div>
+          <div class="hw-period">/mês</div>
         </div>
-        <div class="plan-divider"></div>
-        <ul class="plan-features">
-          <li><i class="fas fa-check-circle"></i>400 GB SSD</li>
-          <li><i class="fas fa-check-circle"></i>Contas de e-mail ilimitadas</li>
-          <li><i class="fas fa-check-circle"></i>16 GB RAM · 6 vCPUs</li>
+        <button class="hw-cta hw-cta-fill" onclick="openModal('Dedicado Profissional','hosting')">Contratar Agora</button>
+        <div class="hw-divider"></div>
+        <ul class="hw-features">
+          <li><i class="fas fa-check-circle"></i>400 GB SSD · 16 GB RAM · 6 vCPUs</li>
+          <li><i class="fas fa-check-circle"></i>E-mails ilimitados</li>
           <li><i class="fas fa-check-circle"></i>WHM próprio (controle total)</li>
           <li><i class="fas fa-check-circle"></i>Backup automático diário</li>
           <li><i class="fas fa-check-circle"></i>Suporte técnico 24h</li>
-          <li><i class="fas fa-check-circle"></i>SSL gratuito incluso</li>
           <li><i class="fas fa-check-circle"></i>Migração Zimbra sem custo</li>
         </ul>
-        <button class="plan-btn plan-btn-primary" onclick="openModal('Dedicado Profissional','Servidor Dedicado')">Contratar Agora</button>
       </div>
-      <div class="plan-card">
-        <div class="plan-name">👑 Dedicado Enterprise</div>
-        <div class="plan-desc">Máxima capacidade para grandes corporações</div>
-        <div class="plan-price">
-          <span class="from">A partir de</span>
-          <span class="currency">R$</span><span class="amount">1.299</span><span class="cents">,00</span><span class="period">/mês</span>
+
+      <div class="hw-plan">
+        <div class="hw-plan-name">Dedicado Enterprise</div>
+        <div class="hw-plan-desc">Máxima capacidade para grandes corporações</div>
+        <div class="hw-plan-pricing">
+          <div class="hw-price-main">
+            <span class="hw-curr">R$</span><span class="hw-amount">1.299</span><span class="hw-cents">,00</span>
+          </div>
+          <div class="hw-period">/mês</div>
         </div>
-        <div class="plan-divider"></div>
-        <ul class="plan-features">
-          <li><i class="fas fa-check-circle"></i>800 GB SSD</li>
-          <li><i class="fas fa-check-circle"></i>Contas de e-mail ilimitadas</li>
-          <li><i class="fas fa-check-circle"></i>32 GB RAM · 8 vCPUs</li>
+        <button class="hw-cta hw-cta-outline" onclick="openModal('Dedicado Enterprise','hosting')">Contratar Agora</button>
+        <div class="hw-divider"></div>
+        <ul class="hw-features">
+          <li><i class="fas fa-check-circle"></i>800 GB SSD · 32 GB RAM · 8 vCPUs</li>
+          <li><i class="fas fa-check-circle"></i>E-mails ilimitados</li>
           <li><i class="fas fa-check-circle"></i>WHM próprio (controle total)</li>
           <li><i class="fas fa-check-circle"></i>Backup automático diário</li>
           <li><i class="fas fa-check-circle"></i>Suporte técnico 24h</li>
-          <li><i class="fas fa-check-circle"></i>SSL gratuito incluso</li>
           <li><i class="fas fa-check-circle"></i>IPs dedicados sob consulta</li>
         </ul>
-        <button class="plan-btn plan-btn-outline" onclick="openModal('Dedicado Enterprise','Servidor Dedicado')">Contratar Agora</button>
       </div>
+
     </div>
   </div>
 </section>
 
-<!-- E-MAIL ZOHO -->
-<section id="email" class="zoho-section">
+<!-- E-MAIL CORPORATIVO -->
+<section id="email" class="email-section">
   <div class="section-header">
     <div class="section-tag"><i class="fas fa-envelope"></i> E-mail Corporativo</div>
-    <h2>E-mail Zoho <span>100% na Nuvem</span></h2>
-    <p>Revendedora autorizada Zoho. E-mail profissional com calendário, contatos e muito mais.</p>
+    <h2>E-mail Profissional <span>para seu negócio</span></h2>
+    <p>Escolha entre e-mail Zoho (cloud) ou cPanel, incluso nos planos de hospedagem.</p>
   </div>
-  <div class="zoho-grid">
-    <div class="zoho-card">
-      <div class="zoho-icon">📧</div>
-      <div class="zoho-name">Mail Lite 5GB</div>
-      <div class="zoho-storage">5 GB / usuário</div>
-      <div class="zoho-price-box">
-        <div class="zoho-price-label">A partir de</div>
-        <div class="zoho-price-val">R$ 95,00</div>
-        <div class="zoho-price-period">/usuário/ano</div>
-      </div>
-      <ul class="zoho-features">
-        <li><i class="fas fa-check-circle"></i>E-mail corporativo</li>
-        <li><i class="fas fa-check-circle"></i>Calendário integrado</li>
-        <li><i class="fas fa-check-circle"></i>Contatos e tarefas</li>
-        <li><i class="fas fa-check-circle"></i>Acesso web e mobile</li>
+
+  <div class="selector-bar">
+    <div class="hw-select" id="sel-email-type">
+      <button class="hw-select-btn" type="button">
+        <span class="hw-select-label">Tipo de e-mail</span>
+        <span class="hw-select-val">E-mail Zoho (Cloud)</span>
+        <i class="fas fa-chevron-down hw-select-arrow"></i>
+      </button>
+      <ul class="hw-select-dropdown">
+        <li class="hw-select-item active" data-value="zoho" data-label="E-mail Zoho (Cloud)">E-mail Zoho (Cloud)</li>
+        <li class="hw-select-item" data-value="cpanel" data-label="E-mail cPanel (Hospedagem)">E-mail cPanel (Hospedagem)</li>
       </ul>
-      <button class="zoho-btn" onclick="openModal('Mail Lite 5GB','E-mail Zoho')">Contratar</button>
     </div>
-    <div class="zoho-card">
-      <div class="zoho-icon">📬</div>
-      <div class="zoho-name">Mail Lite 10GB</div>
-      <div class="zoho-storage">10 GB / usuário</div>
-      <div class="zoho-price-box">
-        <div class="zoho-price-label">A partir de</div>
-        <div class="zoho-price-val">R$ 152,00</div>
-        <div class="zoho-price-period">/usuário/ano</div>
-      </div>
-      <ul class="zoho-features">
-        <li><i class="fas fa-check-circle"></i>E-mail corporativo</li>
-        <li><i class="fas fa-check-circle"></i>Calendário integrado</li>
-        <li><i class="fas fa-check-circle"></i>Contatos e tarefas</li>
-        <li><i class="fas fa-check-circle"></i>Acesso web e mobile</li>
+    <div class="hw-select" id="sel-email-period">
+      <button class="hw-select-btn" type="button">
+        <span class="hw-select-label">Período de contratação</span>
+        <span class="hw-select-val">Mensal</span>
+        <i class="fas fa-chevron-down hw-select-arrow"></i>
+      </button>
+      <ul class="hw-select-dropdown">
+        <li class="hw-select-item active" data-value="mensal" data-label="Mensal">Mensal</li>
+        <li class="hw-select-item" data-value="12m" data-label="12 meses">12 meses <span class="best-tag">-5%</span></li>
+        <li class="hw-select-item" data-value="24m" data-label="24 meses">24 meses <span class="best-tag">-10%</span></li>
       </ul>
-      <button class="zoho-btn" onclick="openModal('Mail Lite 10GB','E-mail Zoho')">Contratar</button>
-    </div>
-    <div class="zoho-card featured">
-      <div class="zoho-icon">💼</div>
-      <div class="zoho-name">Mail Premium</div>
-      <div class="zoho-storage">50 GB / usuário</div>
-      <div class="zoho-price-box">
-        <div class="zoho-price-label">A partir de</div>
-        <div class="zoho-price-val">R$ 285,00</div>
-        <div class="zoho-price-period">/usuário/ano</div>
-      </div>
-      <ul class="zoho-features">
-        <li><i class="fas fa-check-circle"></i>E-mail + S/MIME</li>
-        <li><i class="fas fa-check-circle"></i>Calendário avançado</li>
-        <li><i class="fas fa-check-circle"></i>Backup e arquivamento</li>
-        <li><i class="fas fa-check-circle"></i>Suporte prioritário</li>
-      </ul>
-      <button class="zoho-btn primary" onclick="openModal('Mail Premium','E-mail Zoho')">Contratar</button>
-    </div>
-    <div class="zoho-card">
-      <div class="zoho-icon">🏢</div>
-      <div class="zoho-name">Workplace Padrão</div>
-      <div class="zoho-storage">10 GB / usuário</div>
-      <div class="zoho-price-box">
-        <div class="zoho-price-label">A partir de</div>
-        <div class="zoho-price-val">R$ 190,00</div>
-        <div class="zoho-price-period">/usuário/ano</div>
-      </div>
-      <ul class="zoho-features">
-        <li><i class="fas fa-check-circle"></i>E-mail + Docs + Sheets</li>
-        <li><i class="fas fa-check-circle"></i>Cliq (chat corporativo)</li>
-        <li><i class="fas fa-check-circle"></i>Videoconferência</li>
-        <li><i class="fas fa-check-circle"></i>Intranet corporativa</li>
-      </ul>
-      <button class="zoho-btn" onclick="openModal('Workplace Padrão','E-mail Zoho')">Contratar</button>
-    </div>
-    <div class="zoho-card">
-      <div class="zoho-icon">🚀</div>
-      <div class="zoho-name">Workplace Profissional</div>
-      <div class="zoho-storage">100 GB / usuário</div>
-      <div class="zoho-price-box">
-        <div class="zoho-price-label">A partir de</div>
-        <div class="zoho-price-val">R$ 380,00</div>
-        <div class="zoho-price-period">/usuário/ano</div>
-      </div>
-      <ul class="zoho-features">
-        <li><i class="fas fa-check-circle"></i>Tudo do Padrão</li>
-        <li><i class="fas fa-check-circle"></i>100 GB armazenamento</li>
-        <li><i class="fas fa-check-circle"></i>Backup avançado</li>
-        <li><i class="fas fa-check-circle"></i>Suporte premium</li>
-      </ul>
-      <button class="zoho-btn" onclick="openModal('Workplace Profissional','E-mail Zoho')">Contratar</button>
     </div>
   </div>
+
+  <!-- ZOHO -->
+  <div class="plan-group active" id="pg-zoho">
+    <div class="hw-plans-grid hw-5col">
+
+      <div class="hw-plan" data-section="email" data-base="7.92">
+        <span class="hw-disc-badge" style="display:none"></span>
+        <div class="hw-plan-name">Mail Lite 5GB</div>
+        <div class="hw-plan-desc">5 GB por usuário</div>
+        <div class="hw-plan-pricing">
+          <del class="hw-plan-orig" style="visibility:hidden">R$ 7,92/mês</del>
+          <div class="hw-price-main">
+            <span class="hw-curr">R$</span><span class="hw-amount">7</span><span class="hw-cents">,92</span>
+          </div>
+          <div class="hw-period">/usu./mês</div>
+        </div>
+        <button class="hw-cta hw-cta-outline" onclick="openModal('Mail Lite 5GB','email')">Contratar</button>
+        <div class="hw-divider"></div>
+        <ul class="hw-features">
+          <li><i class="fas fa-check-circle"></i>E-mail corporativo</li>
+          <li><i class="fas fa-check-circle"></i>Calendário integrado</li>
+          <li><i class="fas fa-check-circle"></i>Contatos e tarefas</li>
+          <li><i class="fas fa-check-circle"></i>Acesso web e mobile</li>
+        </ul>
+      </div>
+
+      <div class="hw-plan" data-section="email" data-base="12.67">
+        <span class="hw-disc-badge" style="display:none"></span>
+        <div class="hw-plan-name">Mail Lite 10GB</div>
+        <div class="hw-plan-desc">10 GB por usuário</div>
+        <div class="hw-plan-pricing">
+          <del class="hw-plan-orig" style="visibility:hidden">R$ 12,67/mês</del>
+          <div class="hw-price-main">
+            <span class="hw-curr">R$</span><span class="hw-amount">12</span><span class="hw-cents">,67</span>
+          </div>
+          <div class="hw-period">/usu./mês</div>
+        </div>
+        <button class="hw-cta hw-cta-outline" onclick="openModal('Mail Lite 10GB','email')">Contratar</button>
+        <div class="hw-divider"></div>
+        <ul class="hw-features">
+          <li><i class="fas fa-check-circle"></i>E-mail corporativo</li>
+          <li><i class="fas fa-check-circle"></i>Calendário integrado</li>
+          <li><i class="fas fa-check-circle"></i>Contatos e tarefas</li>
+          <li><i class="fas fa-check-circle"></i>Acesso web e mobile</li>
+        </ul>
+      </div>
+
+      <div class="hw-plan featured" data-section="email" data-base="23.75">
+        <div class="hw-pop-ribbon">Mais Popular</div>
+        <span class="hw-disc-badge" style="display:none"></span>
+        <div class="hw-plan-name">Mail Premium</div>
+        <div class="hw-plan-desc">50 GB por usuário</div>
+        <div class="hw-plan-pricing">
+          <del class="hw-plan-orig" style="visibility:hidden">R$ 23,75/mês</del>
+          <div class="hw-price-main">
+            <span class="hw-curr">R$</span><span class="hw-amount">23</span><span class="hw-cents">,75</span>
+          </div>
+          <div class="hw-period">/usu./mês</div>
+        </div>
+        <button class="hw-cta hw-cta-fill" onclick="openModal('Mail Premium','email')">Contratar</button>
+        <div class="hw-divider"></div>
+        <ul class="hw-features">
+          <li><i class="fas fa-check-circle"></i>E-mail + S/MIME</li>
+          <li><i class="fas fa-check-circle"></i>Calendário avançado</li>
+          <li><i class="fas fa-check-circle"></i>Backup e arquivamento</li>
+          <li><i class="fas fa-check-circle"></i>Suporte prioritário</li>
+        </ul>
+      </div>
+
+      <div class="hw-plan" data-section="email" data-base="15.83">
+        <span class="hw-disc-badge" style="display:none"></span>
+        <div class="hw-plan-name">Workplace Padrão</div>
+        <div class="hw-plan-desc">10 GB por usuário</div>
+        <div class="hw-plan-pricing">
+          <del class="hw-plan-orig" style="visibility:hidden">R$ 15,83/mês</del>
+          <div class="hw-price-main">
+            <span class="hw-curr">R$</span><span class="hw-amount">15</span><span class="hw-cents">,83</span>
+          </div>
+          <div class="hw-period">/usu./mês</div>
+        </div>
+        <button class="hw-cta hw-cta-outline" onclick="openModal('Workplace Padrão','email')">Contratar</button>
+        <div class="hw-divider"></div>
+        <ul class="hw-features">
+          <li><i class="fas fa-check-circle"></i>E-mail + Docs + Sheets</li>
+          <li><i class="fas fa-check-circle"></i>Cliq (chat corporativo)</li>
+          <li><i class="fas fa-check-circle"></i>Videoconferência</li>
+          <li><i class="fas fa-check-circle"></i>Intranet corporativa</li>
+        </ul>
+      </div>
+
+      <div class="hw-plan" data-section="email" data-base="31.67">
+        <span class="hw-disc-badge" style="display:none"></span>
+        <div class="hw-plan-name">Workplace Pro</div>
+        <div class="hw-plan-desc">100 GB por usuário</div>
+        <div class="hw-plan-pricing">
+          <del class="hw-plan-orig" style="visibility:hidden">R$ 31,67/mês</del>
+          <div class="hw-price-main">
+            <span class="hw-curr">R$</span><span class="hw-amount">31</span><span class="hw-cents">,67</span>
+          </div>
+          <div class="hw-period">/usu./mês</div>
+        </div>
+        <button class="hw-cta hw-cta-outline" onclick="openModal('Workplace Profissional','email')">Contratar</button>
+        <div class="hw-divider"></div>
+        <ul class="hw-features">
+          <li><i class="fas fa-check-circle"></i>Tudo do Padrão</li>
+          <li><i class="fas fa-check-circle"></i>100 GB armazenamento</li>
+          <li><i class="fas fa-check-circle"></i>Backup avançado</li>
+          <li><i class="fas fa-check-circle"></i>Suporte premium</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CPANEL EMAIL -->
+  <div class="plan-group" id="pg-cpanel">
+    <div class="email-cpanel-info">
+      <div class="cpanel-info-card">
+        <i class="fas fa-envelope-circle-check"></i>
+        <h3>E-mail cPanel incluso na hospedagem</h3>
+        <p>Todos os planos de hospedagem compartilhada incluem contas de e-mail cPanel sem custo adicional. Configure quantas contas precisar diretamente no painel cPanel.</p>
+        <a href="#hospedagem">Ver planos de hospedagem</a>
+      </div>
+    </div>
+  </div>
+
 </section>
 
 <!-- DOMÍNIOS -->
 <section id="dominios" style="background:#fff">
   <div class="section-header">
     <div class="section-tag"><i class="fas fa-globe"></i> Registro de Domínios</div>
-    <h2>Registre seu <span>domínio</span></h2>
+    <h2>Compare preços das <span>extensões de domínios</span></h2>
     <p>Preços competitivos com suporte completo para registro e transferência.</p>
   </div>
-  <div class="domain-wrapper">
-    <table class="domain-table">
+
+  <div class="domain-table-wrap">
+    <div class="domain-filter-bar">
+      <div class="hw-select" id="sel-domain-cat" style="min-width:180px">
+        <button class="hw-select-btn" type="button">
+          <span class="hw-select-label">Escolha entre</span>
+          <span class="hw-select-val">Todas</span>
+          <i class="fas fa-chevron-down hw-select-arrow"></i>
+        </button>
+        <ul class="hw-select-dropdown">
+          <li class="hw-select-item active" data-value="all" data-label="Todas">Todas</li>
+          <li class="hw-select-item" data-value="popular" data-label="Populares">Populares</li>
+          <li class="hw-select-item" data-value="tech" data-label="Tecnologia">Tecnologia</li>
+        </ul>
+      </div>
+    </div>
+    <table class="domain-table-new">
       <thead>
         <tr>
-          <th>Extensão</th>
-          <th>Registro (1 ano)</th>
+          <th>Extensão de domínio</th>
+          <th>Primeiro ano</th>
           <th>Renovação</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td><span class="domain-ext">.com.br</span></td>
-          <td><span class="domain-price">R$ 49,90</span></td>
-          <td>R$ 49,90/ano</td>
-          <td><button class="plan-btn plan-btn-outline" style="padding:6px 16px;font-size:.78rem;margin:0" onclick="openModal('.com.br','Domínio')">Registrar</button></td>
+        <tr class="domain-row" data-cats="all,popular">
+          <td><span class="dt-ext">.com.br</span></td>
+          <td><span class="dt-price">R$ 49,90</span></td>
+          <td><span class="dt-renew">R$ 49,90/ano</span></td>
+          <td><button class="dt-btn" onclick="openModal('.com.br')">Registrar</button></td>
         </tr>
-        <tr>
-          <td><span class="domain-ext">.com</span></td>
-          <td><span class="domain-price">R$ 79,90</span></td>
-          <td>R$ 79,90/ano</td>
-          <td><button class="plan-btn plan-btn-outline" style="padding:6px 16px;font-size:.78rem;margin:0" onclick="openModal('.com','Domínio')">Registrar</button></td>
+        <tr class="domain-row" data-cats="all,popular">
+          <td><span class="dt-ext">.com</span></td>
+          <td><span class="dt-price">R$ 79,90</span></td>
+          <td><span class="dt-renew">R$ 79,90/ano</span></td>
+          <td><button class="dt-btn" onclick="openModal('.com')">Registrar</button></td>
         </tr>
-        <tr>
-          <td><span class="domain-ext">.net</span></td>
-          <td><span class="domain-price">R$ 79,90</span></td>
-          <td>R$ 79,90/ano</td>
-          <td><button class="plan-btn plan-btn-outline" style="padding:6px 16px;font-size:.78rem;margin:0" onclick="openModal('.net','Domínio')">Registrar</button></td>
+        <tr class="domain-row" data-cats="all,popular">
+          <td><span class="dt-ext">.net</span></td>
+          <td><span class="dt-price">R$ 79,90</span></td>
+          <td><span class="dt-renew">R$ 79,90/ano</span></td>
+          <td><button class="dt-btn" onclick="openModal('.net')">Registrar</button></td>
         </tr>
-        <tr>
-          <td><span class="domain-ext">.org</span></td>
-          <td><span class="domain-price">R$ 79,90</span></td>
-          <td>R$ 79,90/ano</td>
-          <td><button class="plan-btn plan-btn-outline" style="padding:6px 16px;font-size:.78rem;margin:0" onclick="openModal('.org','Domínio')">Registrar</button></td>
+        <tr class="domain-row" data-cats="all,popular">
+          <td><span class="dt-ext">.org</span></td>
+          <td><span class="dt-price">R$ 79,90</span></td>
+          <td><span class="dt-renew">R$ 79,90/ano</span></td>
+          <td><button class="dt-btn" onclick="openModal('.org')">Registrar</button></td>
         </tr>
-        <tr>
-          <td><span class="domain-ext">.io</span></td>
-          <td><span class="domain-price">R$ 199,90</span></td>
-          <td>R$ 199,90/ano</td>
-          <td><button class="plan-btn plan-btn-outline" style="padding:6px 16px;font-size:.78rem;margin:0" onclick="openModal('.io','Domínio')">Registrar</button></td>
+        <tr class="domain-row" data-cats="all,tech">
+          <td><span class="dt-ext">.io</span></td>
+          <td><span class="dt-price">R$ 199,90</span></td>
+          <td><span class="dt-renew">R$ 199,90/ano</span></td>
+          <td><button class="dt-btn" onclick="openModal('.io')">Registrar</button></td>
         </tr>
       </tbody>
     </table>
   </div>
 </section>
-
-<!-- ACEITE DIGITAL
-<section id="aceite" class="aceite-section">
-  <div class="section-header">
-    <div class="section-tag"><i class="fas fa-file-signature"></i> Aceite Digital</div>
-    <h2>Contratação <span>100% Digital</span></h2>
-    <p>Validade jurídica garantida pela MP 2.200-2/2001 e Lei 14.063/2020.</p>
-  </div>
-  <div class="aceite-box">
-    <h3><i class="fas fa-shield-check" style="color:var(--purple);margin-right:8px"></i>Como funciona o aceite digital?</h3>
-    <p>Ao solicitar a contratação de qualquer plano Hostweb, o cliente realiza o aceite eletrônico dos termos de serviço. Este aceite é registrado com:</p>
-    <ul>
-      <li><i class="fas fa-check-circle"></i><strong>Data e hora</strong> exata da aceitação</li>
-      <li><i class="fas fa-check-circle"></i><strong>Endereço de e-mail</strong> do contratante</li>
-      <li><i class="fas fa-check-circle"></i><strong>IP de origem</strong> da solicitação</li>
-      <li><i class="fas fa-check-circle"></i><strong>Hash de integridade</strong> do documento aceito</li>
-    </ul>
-    <p style="margin-top:16px">O aceite digital tem a mesma validade jurídica de uma assinatura física, conforme a <strong>Medida Provisória 2.200-2/2001</strong> (ICP-Brasil) e a <strong>Lei 14.063/2020</strong>.</p>
-    <p>Para contratos de maior valor, utilizamos plataformas parceiras como <strong>ClickSign</strong> ou <strong>ZapSign</strong> para assinatura eletrônica com certificação adicional.</p>
-  </div>
-</section> -->
 
 <!-- DIFERENCIAIS -->
 <section id="diferenciais" class="why-section">
@@ -912,32 +497,32 @@ footer { background: var(--dark); padding: 52px 5% 28px; }
   </div>
   <div class="why-grid">
     <div class="why-card">
-      <div class="why-icon">🏢</div>
+      <div class="why-icon"><i class="fas fa-building"></i></div>
       <h3>Data Center Próprio</h3>
       <p>Infraestrutura Tier III em Fortaleza, CE. Redundância total de energia, refrigeração e conectividade.</p>
     </div>
     <div class="why-card">
-      <div class="why-icon">🔒</div>
+      <div class="why-icon"><i class="fas fa-shield-halved"></i></div>
       <h3>ISO/IEC 27001</h3>
       <p>Certificação internacional de segurança da informação. Seus dados protegidos com os mais altos padrões.</p>
     </div>
     <div class="why-card">
-      <div class="why-icon">⚡</div>
+      <div class="why-icon"><i class="fas fa-bolt"></i></div>
       <h3>99,9% de Uptime</h3>
       <p>SLA garantido em contrato. Monitoramento 24/7 com resposta imediata a qualquer incidente.</p>
     </div>
     <div class="why-card">
-      <div class="why-icon">🎧</div>
+      <div class="why-icon"><i class="fas fa-headset"></i></div>
       <h3>Suporte Especializado</h3>
       <p>Equipe técnica dedicada disponível 24 horas por dia, 7 dias por semana, 365 dias por ano.</p>
     </div>
     <div class="why-card">
-      <div class="why-icon">🚀</div>
+      <div class="why-icon"><i class="fas fa-gauge-high"></i></div>
       <h3>Alta Performance</h3>
       <p>Servidores com SSD NVMe, rede de alta velocidade e tecnologia de ponta para máxima performance.</p>
     </div>
     <div class="why-card">
-      <div class="why-icon">🇧🇷</div>
+      <div class="why-icon"><i class="fas fa-flag"></i></div>
       <h3>100% Nacional</h3>
       <p>Empresa brasileira, dados no Brasil, suporte em português. Conformidade total com a LGPD.</p>
     </div>
@@ -950,8 +535,8 @@ footer { background: var(--dark); padding: 52px 5% 28px; }
     <h2>Pronto para migrar para a Hostweb?</h2>
     <p>Fale com nossos especialistas e receba uma proposta personalizada para o seu negócio.</p>
     <div class="cta-btns">
-      <a href="https://wa.me/5585991293286" target="_blank" class="btn-white"><i class="fab fa-whatsapp" style="margin-right:8px;color:#25d366"></i>Chamar no WhatsApp</a>
-      <button class="btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.4)" onclick="openModal('Proposta Personalizada','Geral')"><i class="fas fa-paper-plane" style="margin-right:8px"></i>Solicitar Proposta</button>
+      <a href="https://wa.me/5585991293286" target="_blank" class="btn-white"><i class="fab fa-whatsapp" style="color:#25d366"></i> Chamar no WhatsApp</a>
+      <a href="mailto:comercial@hostweb.com.br" class="btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.4)"><i class="fas fa-paper-plane"></i> Enviar E-mail</a>
     </div>
   </div>
 </section>
@@ -979,7 +564,7 @@ footer { background: var(--dark); padding: 52px 5% 28px; }
       <ul>
         <li><a href="https://hostweb.com.br" target="_blank">Sobre a Hostweb</a></li>
         <li><a href="#diferenciais">Diferenciais</a></li>
-        <li><a href="#aceite">Aceite Digital</a></li>
+        <li><a href="termos.html" target="_blank">Termos de Uso</a></li>
         <li><a href="https://hostweb.com.br/blog" target="_blank">Blog</a></li>
       </ul>
     </div>
@@ -987,7 +572,7 @@ footer { background: var(--dark); padding: 52px 5% 28px; }
       <h4>Contato</h4>
       <ul>
         <li><a href="tel:+558532882062">(85) 3288-2062</a></li>
-        <li><a href="/cdn-cgi/l/email-protection#94f7fbf9f1e6f7fdf5f8d4fcfbe7e0e3f1f6baf7fbf9baf6e6"><span class="__cf_email__" data-cfemail="9af9f5f7ffe8f9f3fbf6daf2f5e9eeedfff8b4f9f5f7b4f8e8">[email&#160;protected]</span></a></li>
+        <li><a href="mailto:comercial@hostweb.com.br">comercial@hostweb.com.br</a></li>
         <li><a href="https://wa.me/5585991293286" target="_blank">WhatsApp</a></li>
         <li><a href="https://hostweb.com.br/suporte" target="_blank">Abrir Chamado</a></li>
       </ul>

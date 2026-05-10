@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}E-mail Profissional cPanel — Hostweb{% endblock %}
+{% block description %}E-mail corporativo com seu domínio, antispam avançado, IMAP/POP3/SMTP e webmail. A partir de R$ 14,90/mês.{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+  <div class="section-tag"><i class="fas fa-envelope"></i> E-mail Profissional</div>
+  <h1>E-mail corporativo com<br>o seu domínio</h1>
+  <p>Contas de e-mail profissional com antispam avançado, webmail moderno, IMAP/POP3 e SSL. Ativação em minutos.</p>
+</section>
+
+<div class="section">
+  <div class="section-title">
+    <h2>Escolha o número de caixas postais</h2>
+    <p>Todos os planos incluem antispam, SSL/TLS, webmail RoundCube e suporte técnico.</p>
+  </div>
+
+  <div class="plans-grid">
+
+    <!-- STARTER -->
+    <div class="plan-card">
+      <div class="plan-name">Starter</div>
+      <div class="plan-desc">Para pequenos escritórios</div>
+      <div class="plan-price">
+        <span class="plan-curr">R$</span>
+        <span class="plan-amount">14,90</span>
+      </div>
+      <div class="plan-period">/mês · até 10 caixas postais</div>
+      <a href="/aceite/?plan_id=email_starter_mensal" class="plan-cta plan-cta-outline">Contratar Agora</a>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li class="plan-feature-group">Capacidade</li>
+        <li>10 caixas de e-mail</li>
+        <li>10 GB por caixa postal</li>
+        <li>Aliases de e-mail</li>
+        <li class="plan-feature-group">Acesso</li>
+        <li>Acesso via webmail</li>
+        <li>SMTP, IMAP, POP3</li>
+        <li>Outlook e dispositivos móveis</li>
+        <li class="plan-feature-group">Segurança</li>
+        <li>SSL/TLS incluso</li>
+        <li>Antispam + antivírus</li>
+        <li>Filtros e redirecionamentos básicos</li>
+      </ul>
+    </div>
+
+    <!-- BUSINESS (destaque) -->
+    <div class="plan-card featured">
+      <div class="plan-badge">Mais Popular</div>
+      <div class="plan-name">Business</div>
+      <div class="plan-desc">Para equipes em crescimento</div>
+      <div class="plan-price">
+        <span class="plan-curr">R$</span>
+        <span class="plan-amount">29,90</span>
+      </div>
+      <div class="plan-period">/mês · até 20 caixas postais</div>
+      <a href="/aceite/?plan_id=email_business_mensal" class="plan-cta plan-cta-fill">Contratar Agora</a>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li class="plan-feature-group">Capacidade</li>
+        <li>20 caixas de e-mail</li>
+        <li>15 GB por caixa postal</li>
+        <li>Aliases ilimitados</li>
+        <li>Listas de distribuição</li>
+        <li class="plan-feature-group">Acesso</li>
+        <li>Acesso via webmail</li>
+        <li>SMTP, IMAP, POP3</li>
+        <li>Outlook e dispositivos móveis</li>
+        <li class="plan-feature-group">Segurança e Gestão</li>
+        <li>SSL/TLS incluso</li>
+        <li>Antispam avançado + antivírus</li>
+        <li>Filtros e redirecionamentos avançados</li>
+        <li>Backup semanal automático</li>
+      </ul>
+    </div>
+
+    <!-- ENTERPRISE -->
+    <div class="plan-card">
+      <div class="plan-name">Enterprise</div>
+      <div class="plan-desc">Para grandes empresas</div>
+      <div class="plan-price">
+        <span class="plan-curr">R$</span>
+        <span class="plan-amount">59,90</span>
+      </div>
+      <div class="plan-period">/mês · até 50 caixas postais</div>
+      <a href="/aceite/?plan_id=email_enterprise_mensal" class="plan-cta plan-cta-outline">Contratar Agora</a>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li class="plan-feature-group">Capacidade</li>
+        <li>50 caixas de e-mail</li>
+        <li>20 GB por caixa postal</li>
+        <li>Aliases ilimitados</li>
+        <li>Listas e redirecionamentos ilimitados</li>
+        <li class="plan-feature-group">Acesso</li>
+        <li>Acesso via webmail</li>
+        <li>SMTP, IMAP, POP3</li>
+        <li>Outlook e dispositivos móveis</li>
+        <li class="plan-feature-group">Segurança e Gestão</li>
+        <li>SSL/TLS incluso</li>
+        <li>Antispam premium com quarentena</li>
+        <li>Filtros e redirecionamentos ilimitados</li>
+        <li>Backup diário automático <span style="background:var(--red);color:#fff;font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:20px;margin-left:4px;vertical-align:middle">exclusivo</span></li>
+        <li>Arquivamento de e-mails <span style="background:var(--red);color:#fff;font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:20px;margin-left:4px;vertical-align:middle">exclusivo</span></li>
+        <li>Suporte técnico prioritário</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- BANNER SOLUÇÃO DEDICADA -->
+  <div class="dedicated-banner">
+    <div class="dedicated-banner-left">
+      <span class="dedicated-tag"><i class="fas fa-server"></i> Servidor Dedicado · Exclusivo</span>
+      <h2>Precisa de algo além do padrão?</h2>
+      <p>Para empresas que precisam de infraestrutura exclusiva, sem compartilhamento de recursos. Configuramos um servidor dedicado com as suas especificações — caixas, storage e regras do jeito que a sua operação exige.</p>
+      <ul class="dedicated-bullets">
+        <li><i class="fas fa-check-circle"></i> Recursos 100% exclusivos</li>
+        <li><i class="fas fa-check-circle"></i> Gestão independente do servidor</li>
+        <li><i class="fas fa-check-circle"></i> Suporte técnico prioritário</li>
+        <li><i class="fas fa-check-circle"></i> Configuração personalizada</li>
+      </ul>
+    </div>
+    <div class="dedicated-banner-right">
+      <a href="https://wa.me/5585991293286?text=Olá!%20Preciso%20de%20uma%20solução%20de%20e-mail%20personalizada." target="_blank" class="dedicated-btn-primary">
+        <i class="fab fa-whatsapp"></i> Consultar proposta
+      </a>
+      <span class="dedicated-or">ou</span>
+      <a href="mailto:comercial@hostweb.com.br?subject=Solução%20de%20E-mail%20Personalizada" class="dedicated-btn-ghost">fale com um especialista</a>
+    </div>
+  </div>
+
+  <!-- ZOHO CTA -->
+  <div class="zoho-cta-banner">
+    <div class="zoho-cta-left">
+      <span class="zoho-cta-tag"><i class="fas fa-handshake"></i> Parceria Oficial Zoho</span>
+      <h2>Precisa de colaboração completa?</h2>
+      <p>Vá além do e-mail. Com o Zoho Workplace você tem e-mail profissional, calendário compartilhado, videoconferência, Drive na nuvem e muito mais — tudo em um só lugar, com suporte local em português e faturamento em reais.</p>
+      <div class="zoho-chips">
+        <span><i class="fas fa-envelope"></i> Zoho Mail</span>
+        <span><i class="fas fa-calendar-alt"></i> Calendar</span>
+        <span><i class="fas fa-video"></i> Meeting</span>
+        <span><i class="fas fa-folder-open"></i> WorkDrive</span>
+        <span><i class="fas fa-comments"></i> Cliq</span>
+        <span><i class="fas fa-file-alt"></i> Writer</span>
+      </div>
+    </div>
+    <div class="zoho-cta-right">
+      <div class="zoho-logo-banner-wrap">
+        <img src="{{ url_for('static', filename='img/zoho-logo.png') }}" alt="Zoho" class="zoho-logo-banner">
+      </div>
+      <a href="/zoho" class="zoho-btn-primary">
+        <i class="fas fa-arrow-right"></i> Conhecer Parceria Zoho
+      </a>
+      <a href="https://wa.me/5585991293286?text=Olá!%20Tenho%20interesse%20no%20Zoho%20Workplace." target="_blank" class="zoho-btn-wa">
+        <i class="fab fa-whatsapp"></i> Falar com Especialista
+      </a>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

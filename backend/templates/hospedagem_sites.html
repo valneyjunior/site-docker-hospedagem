@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Hospedagem de Sites cPanel — Hostweb{% endblock %}
+{% block description %}Planos de hospedagem de sites com cPanel, SSL gratuito, backup automático e suporte técnico. A partir de R$ 9,90/mês.{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+  <div class="section-tag"><i class="fas fa-server"></i> Hospedagem de Sites</div>
+  <h1>Hospedagem cPanel com<br>alta performance</h1>
+  <p>SSL gratuito, painel cPanel completo, backup automático e suporte técnico inclusos em todos os planos.</p>
+</section>
+
+<div class="section">
+  <div class="section-title">
+    <h2>Escolha o plano ideal</h2>
+    <p>Todos os planos incluem SSL gratuito, painel cPanel, antivírus Imunify 360 e ativação imediata.</p>
+  </div>
+
+  <div class="plans-grid">
+
+    <!-- BÁSICO -->
+    <div class="plan-card">
+      <div class="plan-name">Básico</div>
+      <div class="plan-desc">Para sites institucionais e blogs</div>
+      <div class="plan-price">
+        <span class="plan-curr">R$</span>
+        <span class="plan-amount">9,90</span>
+      </div>
+      <div class="plan-period">/mês · cobrado mensalmente</div>
+      <a href="/aceite/?plan_id=sites_basico_mensal" class="plan-cta plan-cta-outline">Contratar Agora</a>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>1 site hospedado</li>
+        <li>10 GB de espaço em disco SSD</li>
+        <li>3 contas de e-mail profissional</li>
+        <li>SSL gratuito incluso</li>
+        <li>Painel cPanel completo</li>
+        <li>Backup semanal automático</li>
+        <li>Uptime garantido de 99,9%</li>
+        <li>Antivírus Imunify 360</li>
+      </ul>
+    </div>
+
+    <!-- PLUS (destaque) -->
+    <div class="plan-card featured">
+      <div class="plan-badge">Mais Popular</div>
+      <div class="plan-name">Plus</div>
+      <div class="plan-desc">Para empresas em crescimento</div>
+      <div class="plan-price">
+        <span class="plan-curr">R$</span>
+        <span class="plan-amount">19,90</span>
+      </div>
+      <div class="plan-period">/mês · cobrado mensalmente</div>
+      <a href="/aceite/?plan_id=sites_plus_mensal" class="plan-cta plan-cta-fill">Contratar Agora</a>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>Até 5 sites hospedados</li>
+        <li>25 GB de espaço em disco SSD</li>
+        <li>20 contas de e-mail profissional</li>
+        <li>SSL gratuito incluso</li>
+        <li>Painel cPanel completo</li>
+        <li>Backup semanal com restauração</li>
+        <li>IA para criação de site</li>
+        <li>Antivírus Imunify 360</li>
+      </ul>
+    </div>
+
+    <!-- PRO -->
+    <div class="plan-card">
+      <div class="plan-name">Pro</div>
+      <div class="plan-desc">Para lojas virtuais e portais</div>
+      <div class="plan-price">
+        <span class="plan-curr">R$</span>
+        <span class="plan-amount">39,90</span>
+      </div>
+      <div class="plan-period">/mês · cobrado mensalmente</div>
+      <a href="/aceite/?plan_id=sites_pro_mensal" class="plan-cta plan-cta-outline">Contratar Agora</a>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>Até 10 sites hospedados</li>
+        <li>50 GB de espaço em disco SSD</li>
+        <li>50 contas de e-mail profissional</li>
+        <li>SSL gratuito incluso</li>
+        <li>Painel cPanel completo</li>
+        <li>Backup diário automático com histórico de 7 dias</li>
+        <li>Gerenciamento de backups pelo painel</li>
+        <li>Instalador de apps 1 clique <span style="background:var(--red);color:#fff;font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:20px;margin-left:4px;vertical-align:middle">exclusivo</span></li>
+        <li>IA para criação de site</li>
+        <li>Suporte técnico prioritário</li>
+        <li>Antivírus Imunify 360</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="dedicated-banner">
+    <div class="dedicated-banner-left">
+      <span class="dedicated-tag"><i class="fas fa-server"></i> Servidor Dedicado · Exclusivo</span>
+      <h2>Precisa de algo além do compartilhado?</h2>
+      <p>Para grandes operações, múltiplos domínios e alto volume de acessos. Configuramos um servidor dedicado cPanel/WHM com recursos exclusivos e sem compartilhamento de infraestrutura.</p>
+      <ul class="dedicated-bullets">
+        <li><i class="fas fa-check-circle"></i> Recursos 100% exclusivos</li>
+        <li><i class="fas fa-check-circle"></i> cPanel/WHM dedicado</li>
+        <li><i class="fas fa-check-circle"></i> Suporte técnico prioritário</li>
+        <li><i class="fas fa-check-circle"></i> Configuração personalizada</li>
+      </ul>
+    </div>
+    <div class="dedicated-banner-right">
+      <a href="https://wa.me/5585991293286?text=Olá!%20Tenho%20interesse%20em%20servidor%20dedicado." target="_blank" class="dedicated-btn-primary">
+        <i class="fab fa-whatsapp"></i> Falar com Especialista
+      </a>
+      <span class="dedicated-or">ou</span>
+      <a href="mailto:comercial@hostweb.com.br?subject=Servidor%20Dedicado" class="dedicated-btn-ghost">solicitar proposta por e-mail</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

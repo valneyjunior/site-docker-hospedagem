@@ -16,12 +16,14 @@ stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
 SUCCESS_URL    = os.getenv(
     "SUCCESS_URL",
-    "http://localhost/sucesso.html?session_id={CHECKOUT_SESSION_ID}"
+    "http://localhost/sucesso?session_id={CHECKOUT_SESSION_ID}"
 )
 CANCEL_URL     = os.getenv("CANCEL_URL", "http://localhost/?cancelado=1")
 
 from blueprints.aceite import aceite_bp
+from blueprints.pages import pages_bp
 app.register_blueprint(aceite_bp)
+app.register_blueprint(pages_bp)
 
 
 # ── E-MAIL DE BOAS-VINDAS ─────────────────────────────────────────────────────
