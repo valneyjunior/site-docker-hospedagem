@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
-import stripe, os
+from datetime import datetime, timedelta
+import requests as _http
+import os
 
 from utils import PLANS, graph_send_email, EMAIL_FROM, EMAIL_REPLY
 
@@ -10,13 +12,12 @@ load_dotenv()
 app = Flask(__name__, template_folder="templates", static_folder="static")
 CORS(app)
 
-stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
-WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
-SUCCESS_URL    = os.getenv(
-    "SUCCESS_URL",
-    "http://localhost/sucesso?session_id={CHECKOUT_SESSION_ID}"
-)
-CANCEL_URL     = os.getenv("CANCEL_URL", "http://localhost/?cancelado=1")
+ASAAS_API_KEY  = os.getenv("ASAAS_API_KEY", "")
+ASAAS_BASE_URL = os.getenv("ASAAS_BASE_URL", "https://sandbox.asaas.com/api")
+
+def _asaas_headers():
+    return {"Content-Type": "application/json", "access_token": ASAAS_API_KEY}
+
 
 from blueprints.aceite import aceite_bp
 from blueprints.pages import pages_bp
@@ -24,7 +25,6 @@ app.register_blueprint(aceite_bp)
 app.register_blueprint(pages_bp)
 
 
-# ── E-MAIL DE BOAS-VINDAS ─────────────────────────────────────────────────────
 def enviar_email_boas_vindas(email_cliente, nome, plano):
     html = (
         "<html><body style='font-family:Segoe UI,sans-serif;background:#f5f5f7;padding:32px'>"
@@ -62,116 +62,163 @@ def enviar_email_boas_vindas(email_cliente, nome, plano):
         print(f"Falha boas-vindas (Graph): {e}")
 
 
-# ── ROTAS ─────────────────────────────────────────────────────────────────────
-@app.route("/create-checkout-session", methods=["POST"])
-def create_checkout_session():
-    """Cria sessão Stripe diretamente (sem aceite). Mantido para testes."""
-    data    = request.get_json()
-    plan_id = data.get("plan_id")
-    email   = data.get("email")
-    nome    = data.get("nome", "Cliente")
-    empresa = data.get("empresa", "")
-
-    plan = PLANS.get(plan_id)
-    if not plan:
-        return jsonify({"error": f"Plano não encontrado: {plan_id}"}), 400
-
-    try:
-        params = {
-            "mode":       "subscription",
-            "line_items": [{"price": plan["price_id"], "quantity": 1}],
-            "success_url": SUCCESS_URL,
-            "cancel_url":  CANCEL_URL,
-            "metadata": {
-                "plan_id":   plan_id,
-                "plan_name": plan["name"],
-                "nome":      nome,
-                "empresa":   empresa,
-            },
-        }
-        if email:
-            params["customer_email"] = email
-        session = stripe.checkout.Session.create(**params)
-        return jsonify({"url": session.url})
-    except stripe.error.StripeError as e:
-        return jsonify({"error": str(e.user_message)}), 400
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+# ── CRIAR CLIENTE ─────────────────────────────────────────────────────────────
+@app.route("/api/customers", methods=["POST"])
+def create_customer():
+    data = request.json
+    payload = {
+        "name":                 data.get("name"),
+        "cpfCnpj":              data.get("cpfCnpj"),
+        "email":                data.get("email"),
+        "phone":                data.get("phone"),
+        "notificationDisabled": True,
+    }
+    resp = _http.post(f"{ASAAS_BASE_URL}/v3/customers", headers=_asaas_headers(), json=payload)
+    if resp.status_code in (200, 201):
+        return jsonify({"success": True, "customerId": resp.json()["id"]})
+    return jsonify({"success": False, "error": resp.json()}), 400
 
 
-@app.route("/get-session", methods=["GET"])
-def get_session():
-    """Retorna dados de uma sessão Stripe (usada pela página sucesso.html)."""
-    session_id = request.args.get("session_id", "").strip()
-    if not session_id:
-        return jsonify({"error": "session_id obrigatório"}), 400
-    try:
-        s    = stripe.checkout.Session.retrieve(session_id)
-        meta = dict(s.get("metadata") or {})
+# ── CARTÃO DE CRÉDITO ─────────────────────────────────────────────────────────
+@app.route("/api/pay/credit-card", methods=["POST"])
+def pay_credit_card():
+    data     = request.json
+    due_date = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
+    payload  = {
+        "customer":    data["customerId"],
+        "billingType": "CREDIT_CARD",
+        "value":       data["value"],
+        "dueDate":     due_date,
+        "description": data.get("description", "Plano Hostweb"),
+        "creditCard": {
+            "holderName":  data["card"]["holderName"],
+            "number":      data["card"]["number"],
+            "expiryMonth": data["card"]["expiryMonth"],
+            "expiryYear":  data["card"]["expiryYear"],
+            "ccv":         data["card"]["ccv"],
+        },
+        "creditCardHolderInfo": {
+            "name":          data["holder"]["name"],
+            "email":         data["holder"]["email"],
+            "cpfCnpj":       data["holder"]["cpfCnpj"],
+            "postalCode":    data["holder"]["postalCode"],
+            "addressNumber": data["holder"]["addressNumber"],
+            "phone":         data["holder"]["phone"],
+        },
+        "remoteIp": request.remote_addr,
+    }
+    resp = _http.post(f"{ASAAS_BASE_URL}/v3/payments", headers=_asaas_headers(), json=payload)
+    if resp.status_code in (200, 201):
+        result = resp.json()
+        return jsonify({"success": True, "paymentId": result["id"], "status": result["status"]})
+    return jsonify({"success": False, "error": resp.json()}), 400
+
+
+# ── PIX ───────────────────────────────────────────────────────────────────────
+@app.route("/api/pay/pix", methods=["POST"])
+def pay_pix():
+    data     = request.json
+    due_date = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
+    payload  = {
+        "customer":    data["customerId"],
+        "billingType": "PIX",
+        "value":       data["value"],
+        "dueDate":     due_date,
+        "description": data.get("description", "Plano Hostweb"),
+    }
+    resp = _http.post(f"{ASAAS_BASE_URL}/v3/payments", headers=_asaas_headers(), json=payload)
+    if resp.status_code not in (200, 201):
+        return jsonify({"success": False, "error": resp.json()}), 400
+
+    payment    = resp.json()
+    payment_id = payment["id"]
+
+    pix_resp = _http.get(
+        f"{ASAAS_BASE_URL}/v3/payments/{payment_id}/pixQrCode",
+        headers=_asaas_headers(),
+    )
+    if pix_resp.status_code == 200:
+        pix = pix_resp.json()
         return jsonify({
-            "customer_email": s.get("customer_email") or (s.get("customer_details") or {}).get("email", ""),
-            "amount_total":   s.get("amount_total"),
-            "plan_name":      meta.get("plan_name", ""),
-            "metadata":       meta,
+            "success":        True,
+            "paymentId":      payment_id,
+            "status":         payment["status"],
+            "pixQrCode":      pix.get("encodedImage"),
+            "pixCopyPaste":   pix.get("payload"),
+            "expirationDate": pix.get("expirationDate"),
         })
-    except stripe.error.StripeError as e:
-        return jsonify({"error": str(e.user_message)}), 400
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    return jsonify({"success": True, "paymentId": payment_id, "status": payment["status"],
+                    "pixQrCode": None}), 200
 
 
-@app.route("/webhook", methods=["POST"])
-def webhook():
-    payload    = request.get_data()
-    sig_header = request.headers.get("Stripe-Signature")
-    try:
-        event = stripe.Webhook.construct_event(payload, sig_header, WEBHOOK_SECRET)
-    except ValueError:
-        return jsonify({"error": "Invalid payload"}), 400
-    except stripe.error.SignatureVerificationError:
-        return jsonify({"error": "Invalid signature"}), 400
-
-    etype = event["type"]
-
-    if etype == "checkout.session.completed":
-        s     = event["data"]["object"]
-        email = s.get("customer_email") or s.get("customer_details", {}).get("email", "")
-        meta  = s.get("metadata", {})
-        plano = meta.get("plan_name", "N/A")
-        nome  = meta.get("nome", "Cliente")
-        print(f"Pagamento confirmado | Plano: {plano} | E-mail: {email}")
-        if email:
-            enviar_email_boas_vindas(email, nome, plano)
-
-    elif etype == "invoice.payment_succeeded":
-        amount = event["data"]["object"].get("amount_paid", 0) / 100
-        print(f"Renovação paga | R$ {amount:.2f}")
-
-    elif etype == "customer.subscription.deleted":
-        print(f"Assinatura cancelada | {event['data']['object'].get('customer')}")
-
-    elif etype == "invoice.payment_failed":
-        print(f"Pagamento falhou | {event['data']['object'].get('customer_email')}")
-
-    return jsonify({"status": "ok"}), 200
+# ── BOLETO ────────────────────────────────────────────────────────────────────
+@app.route("/api/pay/boleto", methods=["POST"])
+def pay_boleto():
+    data     = request.json
+    due_date = data.get("dueDate", (datetime.now() + timedelta(days=3)).strftime("%Y-%m-%d"))
+    payload  = {
+        "customer":    data["customerId"],
+        "billingType": "BOLETO",
+        "value":       data["value"],
+        "dueDate":     due_date,
+        "description": data.get("description", "Plano Hostweb"),
+    }
+    resp = _http.post(f"{ASAAS_BASE_URL}/v3/payments", headers=_asaas_headers(), json=payload)
+    if resp.status_code in (200, 201):
+        result = resp.json()
+        return jsonify({
+            "success":     True,
+            "paymentId":   result["id"],
+            "status":      result["status"],
+            "bankSlipUrl": result.get("bankSlipUrl"),
+            "invoiceUrl":  result.get("invoiceUrl"),
+        })
+    return jsonify({"success": False, "error": resp.json()}), 400
 
 
+# ── STATUS ────────────────────────────────────────────────────────────────────
+@app.route("/api/payments/<payment_id>/status", methods=["GET"])
+def check_payment_status(payment_id):
+    resp = _http.get(f"{ASAAS_BASE_URL}/v3/payments/{payment_id}", headers=_asaas_headers())
+    if resp.status_code == 200:
+        result = resp.json()
+        return jsonify({"success": True, "paymentId": result["id"], "status": result["status"]})
+    return jsonify({"success": False, "error": resp.json()}), 400
+
+
+# ── WEBHOOK ───────────────────────────────────────────────────────────────────
+@app.route("/api/webhook/asaas", methods=["POST"])
+def webhook_asaas():
+    data       = request.json or {}
+    event      = data.get("event")
+    payment    = data.get("payment", {})
+    payment_id = payment.get("id")
+    status     = payment.get("status")
+    print(f"[WEBHOOK] {event} | payment={payment_id} | status={status}")
+
+    if event in ("PAYMENT_CONFIRMED", "PAYMENT_RECEIVED"):
+        customer_email = payment.get("customer", {}).get("email") if isinstance(payment.get("customer"), dict) else ""
+        description    = payment.get("description", "Plano Hostweb")
+        if customer_email:
+            enviar_email_boas_vindas(customer_email, "Cliente", description)
+
+    return jsonify({"received": True}), 200
+
+
+# ── HEALTH ────────────────────────────────────────────────────────────────────
 @app.route("/health", methods=["GET"])
 def health():
-    from utils import get_db
+    from utils import get_db, AZURE_CLIENT_ID
     db_ok = False
     try:
-        conn = get_db()
-        conn.close()
-        db_ok = True
+        conn = get_db(); conn.close(); db_ok = True
     except Exception:
         pass
-    from utils import AZURE_CLIENT_ID
-    key = stripe.api_key or ""
     return jsonify({
         "status":      "online",
         "database":    "ok" if db_ok else "erro",
-        "stripe_mode": "test" if "test" in key else "live",
+        "gateway":     "asaas",
+        "asaas_env":   "sandbox" if "sandbox" in ASAAS_BASE_URL else "producao",
         "graph_email": "ok" if AZURE_CLIENT_ID else "não configurado",
         "blueprints":  ["aceite", "pages"],
     })

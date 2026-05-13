@@ -159,6 +159,9 @@ select {
   cursor: pointer;
 }
 
+/* ── FIELD HINT ──────────────────────────────────────────────────────── */
+.field-hint { font-size: .71rem; color: #9ca3af; margin-top: 3px; }
+
 /* ── TERMS ACCORDION ─────────────────────────────────────────────────── */
 .terms-accordion { margin: 18px 0 14px; }
 
@@ -385,10 +388,97 @@ select {
 .footer a { color: var(--muted); text-decoration: none; }
 .footer a:hover { color: var(--purple); }
 
+/* ── SEÇÃO DE PAGAMENTO ──────────────────────────────────────────────────── */
+.pag-plano-resumo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 10px 14px;
+  margin-bottom: 18px;
+  gap: 10px;
+}
+.pag-plano-nome { font-size: .88rem; font-weight: 700; color: var(--dark); }
+.pag-valor {
+  font-size: 1.1rem; font-weight: 800; white-space: nowrap;
+  background: var(--gradient);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.pag-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+.pag-tab {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 11px 8px; background: #fff; border: 1.5px solid var(--border);
+  border-radius: 9px; font-size: .82rem; font-weight: 600; color: var(--muted);
+  font-family: inherit; cursor: pointer; transition: all .15s;
+}
+.pag-tab-icon { font-size: 1rem; }
+.pag-tab:hover { border-color: var(--purple); color: var(--dark); }
+.pag-tab.active {
+  border-color: var(--purple); background: rgba(107,15,168,.06);
+  color: var(--dark); box-shadow: 0 0 0 3px rgba(107,15,168,.08);
+}
+
+.pag-metodo { margin-bottom: 4px; }
+.pag-info-text {
+  font-size: .85rem; color: var(--muted); line-height: 1.7; text-align: center;
+  padding: 18px 10px; background: var(--bg); border-radius: 9px; border: 1px solid var(--border);
+}
+
+.pag-resultado-inner {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; padding: 16px 10px 10px; gap: 8px;
+}
+.pag-resultado-icon { font-size: 3rem; }
+.pag-resultado-inner h3 { font-size: 1.1rem; font-weight: 700; color: var(--dark); }
+.pag-resultado-inner p { font-size: .85rem; color: var(--muted); line-height: 1.6; }
+
+.pag-badge {
+  display: inline-block; padding: 5px 14px; border-radius: 20px;
+  font-size: .72rem; font-weight: 700; letter-spacing: .4px; margin: 4px 0;
+}
+.pag-badge-ok    { background: rgba(22,163,74,.1);  color: #16a34a; border: 1px solid rgba(22,163,74,.2); }
+.pag-badge-pending { background: rgba(234,179,8,.1); color: #ca8a04; border: 1px solid rgba(234,179,8,.2); }
+
+.pag-qr-box {
+  background: #fff; border: 1px solid var(--border); border-radius: 12px;
+  padding: 14px; display: inline-block; margin: 8px 0;
+}
+.pag-qr-box img { width: 180px; height: 180px; display: block; }
+
+.pag-copy-label { font-size: .78rem; color: var(--muted); margin-top: 6px; }
+.pag-copy-paste {
+  font-size: .7rem; word-break: break-all; background: var(--bg);
+  border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px;
+  color: #4b5563; cursor: pointer; transition: border-color .15s;
+  max-width: 420px; text-align: left;
+}
+.pag-copy-paste:hover { border-color: var(--purple); }
+.pag-info-small { font-size: .75rem !important; color: #9ca3af !important; margin-top: 4px; }
+
+.pag-btn-boleto {
+  display: inline-block; padding: 12px 28px; background: var(--gradient);
+  color: #fff; border-radius: 9px; font-size: .9rem; font-weight: 700;
+  text-decoration: none; transition: opacity .15s; margin: 6px 0;
+}
+.pag-btn-boleto:hover { opacity: .88; }
+
+.pag-btn-voltar {
+  display: inline-block; padding: 10px 24px; border: 1.5px solid var(--border);
+  color: var(--muted); border-radius: 9px; font-size: .84rem; font-weight: 600;
+  text-decoration: none; margin-top: 4px; transition: border-color .15s, color .15s;
+}
+.pag-btn-voltar:hover { border-color: var(--purple); color: var(--purple); }
+
 /* ── RESPONSIVE ──────────────────────────────────────────────────────── */
 @media (max-width: 520px) {
   .form-grid { grid-template-columns: 1fr; }
   .page-wrapper { margin: 14px auto 48px; }
   .form-card-body { padding: 20px 16px 18px; }
   .plan-summary { flex-direction: column; align-items: flex-start; }
+  .pag-tabs { flex-direction: column; }
+  .pag-plano-resumo { flex-direction: column; align-items: flex-start; gap: 4px; }
 }

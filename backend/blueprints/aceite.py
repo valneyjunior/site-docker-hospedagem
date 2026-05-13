@@ -22,7 +22,8 @@ from reportlab.lib.units import cm
 from reportlab.lib import colors
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, HRFlowable, Image as RLImage
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
-import qrcode, hashlib, uuid, os, io, stripe, psycopg2, psycopg2.extras
+import qrcode, hashlib, uuid, os, io, psycopg2, psycopg2.extras
+import requests as _http
 from datetime import datetime, timezone
 import pytz
 
@@ -38,6 +39,24 @@ aceite_bp = Blueprint(
 
 VERIFICACAO_BASE_URL = os.getenv("VERIFICACAO_URL", "https://hostweb.com.br/verificar-aceite")
 VERSAO_TERMOS        = "v1.0-2026"
+ASAAS_API_KEY        = os.getenv("ASAAS_API_KEY", "")
+ASAAS_BASE_URL       = os.getenv("ASAAS_BASE_URL", "https://sandbox.asaas.com/api")
+
+
+def _criar_cliente_asaas(nome, email, cpf_cnpj, telefone=""):
+    """Cria cliente no Asaas e retorna o ID."""
+    headers = {"Content-Type": "application/json", "access_token": ASAAS_API_KEY}
+    payload = {
+        "name":                 nome,
+        "cpfCnpj":              cpf_cnpj.replace(".", "").replace("-", "").replace("/", ""),
+        "email":                email,
+        "notificationDisabled": True,
+    }
+    if telefone:
+        payload["mobilePhone"] = "".join(c for c in telefone if c.isdigit())
+    resp = _http.post(f"{ASAAS_BASE_URL}/v3/customers", headers=headers, json=payload, timeout=15)
+    resp.raise_for_status()
+    return resp.json()["id"]
 
 # ── Texto dos termos (SHA-256 garante integridade após aceite) ───────────────
 TERMO_TEXTO = """
@@ -393,12 +412,14 @@ def confirmar_aceite():
     nome     = (data.get("nome",     "") or "").strip()
     email    = (data.get("email",    "") or "").strip()
     cpf_cnpj = (data.get("cpf_cnpj", "") or "").strip()
+    telefone = (data.get("telefone", "") or "").strip()
     empresa  = (data.get("empresa",  "") or "").strip()
+    dominio  = (data.get("dominio",  "") or "").strip()
     plan_id  = (data.get("plan_id",  "") or "").strip()
     aceito   = data.get("aceito", False)
     lgpd     = data.get("lgpd",   False)
 
-    if not all([nome, email, cpf_cnpj, plan_id, aceito, lgpd]):
+    if not all([nome, email, cpf_cnpj, telefone, dominio, plan_id, aceito, lgpd]):
         return jsonify({"erro": "Preencha todos os campos obrigatórios e aceite os termos."}), 400
 
     plan_info = PLANS.get(plan_id)
@@ -406,7 +427,6 @@ def confirmar_aceite():
         return jsonify({"erro": f"Plano inválido: {plan_id}"}), 400
 
     plano_nome = plan_info["name"]
-    price_id   = plan_info["price_id"]
 
     meta = _capturar_metadados()
     _salvar_aceite(
@@ -419,35 +439,18 @@ def confirmar_aceite():
         meta["timestamp_brt"], meta["timestamp_utc"], meta["ip"], VERSAO_TERMOS,
     )
 
-    success_url = os.getenv(
-        "SUCCESS_URL",
-        "http://localhost/sucesso?session_id={CHECKOUT_SESSION_ID}"
-    )
-    cancel_url = os.getenv("CANCEL_URL", "http://localhost/?cancelado=1")
-
-    stripe_mode = plan_info.get("mode", "subscription")
     try:
-        session = stripe.checkout.Session.create(
-            mode=stripe_mode,
-            line_items=[{"price": price_id, "quantity": 1}],
-            success_url=success_url,
-            cancel_url=cancel_url,
-            customer_email=email,
-            metadata={
-                "plan_id":          plan_id,
-                "plan_name":        plano_nome,
-                "nome":             nome,
-                "empresa":          empresa,
-                "protocolo_aceite": meta["protocolo"],
-            },
-        )
+        customer_id = _criar_cliente_asaas(nome, email, cpf_cnpj, telefone)
     except Exception as e:
-        return jsonify({"erro": f"Erro ao criar sessão de pagamento: {e}"}), 500
+        return jsonify({"erro": f"Erro ao cadastrar no gateway de pagamento: {e}"}), 500
 
     return jsonify({
-        "ok":        True,
-        "protocolo": meta["protocolo"],
-        "url":       session.url,
+        "ok":         True,
+        "protocolo":  meta["protocolo"],
+        "customerId": customer_id,
+        "planName":   plano_nome,
+        "value":      plan_info.get("value", 0),
+        "dominio":    dominio,
     })
 
 
