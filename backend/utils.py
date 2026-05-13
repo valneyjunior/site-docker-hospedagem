@@ -1,25 +1,61 @@
 """
-utils.py — Configurações compartilhadas: SMTP, banco de dados e planos.
+utils.py — Configurações compartilhadas: Microsoft Graph e-mail, banco de dados e planos.
 """
-import os, smtplib, psycopg2
+import os, psycopg2, requests as _http
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# ── SMTP ─────────────────────────────────────────────────────────────────────
-SMTP_HOST   = os.getenv("SMTP_HOST",  "smtp.gmail.com")
-SMTP_PORT   = int(os.getenv("SMTP_PORT", "587"))
-SMTP_USER   = os.getenv("SMTP_USER",  "")
-SMTP_PASS   = os.getenv("SMTP_PASS",  "")
-EMAIL_FROM  = os.getenv("EMAIL_FROM", SMTP_USER)
-EMAIL_REPLY = os.getenv("EMAIL_REPLY", "comercial@hostweb.com.br")
+# ── MICROSOFT GRAPH ───────────────────────────────────────────────────────────
+AZURE_TENANT_ID     = os.getenv("AZURE_TENANT_ID",     "")
+AZURE_CLIENT_ID     = os.getenv("AZURE_CLIENT_ID",     "")
+AZURE_CLIENT_SECRET = os.getenv("AZURE_CLIENT_SECRET", "")
+GRAPH_SENDER        = os.getenv("GRAPH_SENDER",        "")
+EMAIL_REPLY         = os.getenv("EMAIL_REPLY",         "comercial@hostweb.com.br")
 
-def smtp_conn():
-    conn = smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=15)
-    conn.ehlo()
-    conn.starttls()
-    conn.login(SMTP_USER, SMTP_PASS)
-    return conn
+# mantido para compatibilidade com imports existentes em aceite.py
+EMAIL_FROM  = GRAPH_SENDER
+SMTP_USER   = ""
+SMTP_PASS   = ""
+
+def _get_graph_token() -> str:
+    """Obtém access token via client credentials (OAuth2)."""
+    url  = f"https://login.microsoftonline.com/{AZURE_TENANT_ID}/oauth2/v2.0/token"
+    data = {
+        "grant_type":    "client_credentials",
+        "client_id":     AZURE_CLIENT_ID,
+        "client_secret": AZURE_CLIENT_SECRET,
+        "scope":         "https://graph.microsoft.com/.default",
+    }
+    r = _http.post(url, data=data, timeout=15)
+    r.raise_for_status()
+    return r.json()["access_token"]
+
+def graph_send_email(to: str, subject: str, html_body: str,
+                     reply_to: str | None = None) -> None:
+    """Envia e-mail via Microsoft Graph API (Mail.Send application permission)."""
+    if not all([AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, GRAPH_SENDER]):
+        print("Graph API não configurada — e-mail não enviado.")
+        return
+
+    token   = _get_graph_token()
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type":  "application/json",
+    }
+    payload = {
+        "message": {
+            "subject": subject,
+            "body":    {"contentType": "HTML", "content": html_body},
+            "toRecipients": [{"emailAddress": {"address": to}}],
+            **({"replyTo": [{"emailAddress": {"address": reply_to}}]} if reply_to else {}),
+        },
+        "saveToSentItems": True,
+    }
+    url = f"https://graph.microsoft.com/v1.0/users/{GRAPH_SENDER}/sendMail"
+    r   = _http.post(url, headers=headers, json=payload, timeout=20)
+    r.raise_for_status()
+    print(f"E-mail enviado via Graph → {to} | {subject[:50]}")
 
 # ── BANCO DE DADOS ────────────────────────────────────────────────────────────
 def get_db():

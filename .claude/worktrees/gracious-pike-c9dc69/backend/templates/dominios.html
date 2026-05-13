@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block title %}Registro de Domínios — Hostweb{% endblock %}
+{% block description %}Registre seu domínio .com.br, .com, .net e .org com suporte completo e preços competitivos.{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+  <div class="section-tag"><i class="fas fa-globe"></i> Domínios</div>
+  <h1>Registre o endereço<br>da sua empresa online</h1>
+  <p>Preços competitivos, registro imediato e suporte completo para DNS, transferência e renovação.</p>
+</section>
+
+<div class="section">
+
+  <!-- BUSCADOR DE DOMÍNIOS -->
+  <div class="domain-search-box">
+    <h2>Verifique a disponibilidade do seu domínio</h2>
+    <p>Digite o nome desejado e descubra se está disponível para registro.</p>
+    <div class="domain-search-form">
+      <div class="domain-search-input-wrap">
+        <i class="fas fa-globe domain-search-icon"></i>
+        <input type="text" id="domain-input" class="domain-search-input"
+               placeholder="minhaempresa" maxlength="63"
+               autocomplete="off" spellcheck="false" />
+      </div>
+      <button id="domain-search-btn" class="domain-search-btn" onclick="buscarDominio()">
+        <span id="btn-text"><i class="fas fa-search"></i> Verificar</span>
+        <span id="btn-loading" style="display:none"><i class="fas fa-spinner fa-spin"></i> Verificando…</span>
+      </button>
+    </div>
+    <div class="domain-ext-filter">
+      <span class="domain-ext-label">Extensões:</span>
+      <label class="domain-ext-check"><input type="checkbox" value="com.br" checked> .com.br</label>
+      <label class="domain-ext-check"><input type="checkbox" value="com" checked> .com</label>
+      <label class="domain-ext-check"><input type="checkbox" value="net"> .net</label>
+      <label class="domain-ext-check"><input type="checkbox" value="org"> .org</label>
+      <label class="domain-ext-check"><input type="checkbox" value="net.br"> .net.br</label>
+      <label class="domain-ext-check"><input type="checkbox" value="org.br"> .org.br</label>
+    </div>
+    <div id="domain-results" class="domain-results" style="display:none"></div>
+    <div id="domain-erro" class="domain-erro" style="display:none"></div>
+  </div>
+
+  <div class="section-title" style="margin-top:48px">
+    <h2>Preços por extensão de domínio</h2>
+    <p>Todos os domínios incluem gestão de DNS, redirecionamento e suporte técnico.</p>
+  </div>
+
+  <div class="domain-table-wrap">
+    <table class="domain-table">
+      <thead>
+        <tr>
+          <th>Extensão de domínio</th>
+          <th>Registro (1º ano)</th>
+          <th>Renovação anual</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <span class="dt-ext">.com.br</span>
+            <div style="font-size:.75rem;color:var(--muted);margin-top:3px">Domínio brasileiro preferido</div>
+          </td>
+          <td><span class="dt-price">R$ 39,90</span></td>
+          <td><span class="dt-renew">R$ 39,90/ano</span></td>
+          <td><a href="/aceite/?plan_id=dominio_com_br" class="dt-btn">Registrar</a></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="dt-ext">.com</span>
+            <div style="font-size:.75rem;color:var(--muted);margin-top:3px">Presença global</div>
+          </td>
+          <td><span class="dt-price">R$ 59,90</span></td>
+          <td><span class="dt-renew">R$ 59,90/ano</span></td>
+          <td><a href="/aceite/?plan_id=dominio_com" class="dt-btn">Registrar</a></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="dt-ext">.net</span>
+            <div style="font-size:.75rem;color:var(--muted);margin-top:3px">Para redes e tecnologia</div>
+          </td>
+          <td><span class="dt-price">R$ 49,90</span></td>
+          <td><span class="dt-renew">R$ 49,90/ano</span></td>
+          <td><a href="/aceite/?plan_id=dominio_net" class="dt-btn">Registrar</a></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="dt-ext">.org</span>
+            <div style="font-size:.75rem;color:var(--muted);margin-top:3px">Para organizações e ONGs</div>
+          </td>
+          <td><span class="dt-price">R$ 49,90</span></td>
+          <td><span class="dt-renew">R$ 49,90/ano</span></td>
+          <td><a href="/aceite/?plan_id=dominio_org" class="dt-btn">Registrar</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cta-banner">
+    <h2>Precisa de outra extensão?</h2>
+    <p>Trabalhamos com dezenas de extensões de domínios. Consulte disponibilidade e preços especiais.</p>
+    <div class="cta-banner-btns">
+      <a href="https://wa.me/5585991293286?text=Olá!%20Quero%20registrar%20um%20domínio.%20Podem%20me%20ajudar?" target="_blank" class="btn-wa">
+        <i class="fab fa-whatsapp"></i> Consultar Disponibilidade
+      </a>
+      <a href="mailto:comercial@hostweb.com.br?subject=Registro%20de%20Domínio" class="btn-cta-ghost">
+        <i class="fas fa-envelope"></i> Solicitar por E-mail
+      </a>
+    </div>
+  </div>
+</div>
+
+{% block extra_js %}
+<script>
+document.getElementById('domain-input').addEventListener('keydown', function(e){
+  if (e.key === 'Enter') buscarDominio();
+});
+
+function buscarDominio() {
+  var nome = document.getElementById('domain-input').value.trim().toLowerCase().replace(/\s+/g,'').split('.')[0];
+  var exts = Array.from(document.querySelectorAll('.domain-ext-check input:checked')).map(function(el){ return el.value; });
+  var results = document.getElementById('domain-results');
+  var erroEl  = document.getElementById('domain-erro');
+  var btnText    = document.getElementById('btn-text');
+  var btnLoading = document.getElementById('btn-loading');
+
+  results.style.display = 'none';
+  erroEl.style.display  = 'none';
+
+  if (!nome || nome.length < 2) {
+    erroEl.textContent = 'Digite pelo menos 2 caracteres para o nome do domínio.';
+    erroEl.style.display = 'block';
+    return;
+  }
+  if (exts.length === 0) {
+    erroEl.textContent = 'Selecione ao menos uma extensão.';
+    erroEl.style.display = 'block';
+    return;
+  }
+
+  btnText.style.display    = 'none';
+  btnLoading.style.display = 'inline';
+  document.getElementById('domain-search-btn').disabled = true;
+
+  var params = new URLSearchParams({ nome: nome });
+  exts.forEach(function(e){ params.append('ext', e); });
+
+  fetch('/verificar-dominio?' + params.toString())
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      if (data.erro) {
+        erroEl.textContent = data.erro;
+        erroEl.style.display = 'block';
+        return;
+      }
+      renderResults(data.resultados);
+    })
+    .catch(function(){
+      erroEl.textContent = 'Erro ao verificar. Tente novamente em instantes.';
+      erroEl.style.display = 'block';
+    })
+    .finally(function(){
+      btnText.style.display    = 'inline';
+      btnLoading.style.display = 'none';
+      document.getElementById('domain-search-btn').disabled = false;
+    });
+}
+
+function renderResults(resultados) {
+  var container = document.getElementById('domain-results');
+  var html = '<ul class="domain-result-list">';
+  resultados.forEach(function(r) {
+    var icon, badge, action;
+    if (r.disponivel === true) {
+      icon   = '<i class="fas fa-check-circle" style="color:#16a34a"></i>';
+      badge  = '<span class="dr-badge dr-disponivel">Disponível</span>';
+      action = '<a href="/aceite/?plan_id=' + r.plan_id + '" class="dr-btn dr-btn-registrar">Registrar</a>';
+    } else if (r.disponivel === false) {
+      icon   = '<i class="fas fa-times-circle" style="color:#dc2626"></i>';
+      badge  = '<span class="dr-badge dr-indisponivel">Registrado</span>';
+      action = '<span class="dr-indisponivel-txt">Não disponível</span>';
+    } else {
+      icon   = '<i class="fas fa-question-circle" style="color:#d97706"></i>';
+      badge  = '<span class="dr-badge dr-incerto">Indeterminado</span>';
+      action = '<a href="https://wa.me/5585991293286?text=Verificar+disponibilidade+de+' + r.dominio + '" target="_blank" class="dr-btn dr-btn-consultar">Consultar</a>';
+    }
+    html += '<li class="domain-result-item">'
+          + '<div class="dr-left">' + icon + '<span class="dr-name">' + r.dominio + '</span>' + badge + '</div>'
+          + '<div class="dr-right"><span class="dr-price">' + r.preco + '</span>' + action + '</div>'
+          + '</li>';
+  });
+  html += '</ul>';
+  container.innerHTML = html;
+  container.style.display = 'block';
+}
+</script>
+{% endblock %}
+
+{% endblock %}

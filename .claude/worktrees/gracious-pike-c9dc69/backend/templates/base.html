@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Hostweb — Hospedagem e Serviços de TI{% endblock %}</title>
+  <meta name="description" content="{% block description %}Hostweb Data Center — Hospedagem de Sites, E-mail Profissional e Domínios com infraestrutura Tier III em Fortaleza, CE.{% endblock %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="header-logo">
+      <img src="{{ url_for('static', filename='img/Logo-Hostweb.png') }}" alt="Hostweb"
+           onerror="this.style.display='none'">
+    </a>
+    <nav class="header-nav">
+      <a href="/hospedagem-sites"{% if request.path == '/hospedagem-sites' %} class="active"{% endif %}>Hospedagem de Sites</a>
+      <a href="/hospedagem-email"{% if request.path == '/hospedagem-email' %} class="active"{% endif %}>E-mail Profissional</a>
+      <a href="/zoho"{% if request.path == '/zoho' %} class="active"{% endif %}>Parceria Zoho</a>
+      <a href="/dominios"{% if request.path == '/dominios' %} class="active"{% endif %}>Domínios</a>
+    </nav>
+    <div class="header-actions">
+      <a href="https://hostweb.com.br/suporte" target="_blank" class="btn-header-cta">Área do Cliente</a>
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Abrir menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobile-nav">
+  <a href="/hospedagem-sites"><i class="fas fa-server"></i> Hospedagem de Sites</a>
+  <a href="/hospedagem-email"><i class="fas fa-envelope"></i> E-mail Profissional</a>
+  <a href="/zoho"><i class="fas fa-handshake"></i> Parceria Zoho</a>
+  <a href="/dominios"><i class="fas fa-globe"></i> Domínios</a>
+  <a href="https://hostweb.com.br/suporte" target="_blank"><i class="fas fa-circle-user"></i> Área do Cliente</a>
+</nav>
+
+<main>{% block content %}{% endblock %}</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="{{ url_for('static', filename='img/Logo-Hostweb.png') }}" alt="Hostweb">
+      <p>Data Center Tier III · Fortaleza, CE</p>
+      <p>CNPJ 07.797.967/0001-60</p>
+      <p>© 2026 Hostweb Data Center e Serviços LTDA EPP</p>
+    </div>
+    <div class="footer-links">
+      <div>
+        <h4>Produtos</h4>
+        <a href="/hospedagem-sites">Hospedagem de Sites</a>
+        <a href="/hospedagem-email">E-mail Profissional</a>
+        <a href="/zoho">Parceria Zoho</a>
+        <a href="/dominios">Domínios</a>
+      </div>
+      <div>
+        <h4>Suporte</h4>
+        <a href="tel:+558532882062">(85) 3288-2062</a>
+        <a href="mailto:comercial@hostweb.com.br">comercial@hostweb.com.br</a>
+        <a href="https://wa.me/5585991293286" target="_blank">WhatsApp</a>
+        <a href="/termos">Termos de Uso</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Hostweb Data Center e Serviços LTDA EPP — Todos os direitos reservados · ISO 27001 · Fortaleza, CE</p>
+  </div>
+</footer>
+
+<a href="https://wa.me/5585991293286" target="_blank" class="wa-float" aria-label="Fale via WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block extra_js %}{% endblock %}
+
+</body>
+</html>

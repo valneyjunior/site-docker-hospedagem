@@ -2,10 +2,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 import stripe, os
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 
-from utils import PLANS, smtp_conn, SMTP_USER, SMTP_PASS, EMAIL_FROM, EMAIL_REPLY
+from utils import PLANS, graph_send_email, EMAIL_FROM, EMAIL_REPLY
 
 load_dotenv()
 
@@ -28,47 +26,40 @@ app.register_blueprint(pages_bp)
 
 # ── E-MAIL DE BOAS-VINDAS ─────────────────────────────────────────────────────
 def enviar_email_boas_vindas(email_cliente, nome, plano):
-    if not SMTP_USER or not SMTP_PASS:
-        print("SMTP não configurado — boas-vindas não enviado.")
-        return
-    msg = MIMEMultipart("alternative")
-    msg["Subject"]  = f"Bem-vindo à Hostweb! Seu plano {plano} está ativo"
-    msg["From"]     = f"Hostweb <{EMAIL_FROM}>"
-    msg["To"]       = email_cliente
-    msg["Reply-To"] = EMAIL_REPLY
-
     html = (
         "<html><body style='font-family:Segoe UI,sans-serif;background:#f5f5f7;padding:32px'>"
         "<div style='max-width:560px;margin:0 auto;background:#fff;border-radius:16px;"
         "box-shadow:0 4px 24px rgba(0,0,0,.08)'>"
-        "<div style='background:linear-gradient(135deg,#e8001c,#6b0fa8);padding:32px;text-align:center'>"
-        "<img src='https://hostweb.com.br/wp-content/uploads/2021/03/Logo-Hostweb.png'"
-        " alt='Hostweb' style='height:48px;filter:brightness(0) invert(1)'>"
-        "<h1 style='color:#fff;margin:16px 0 0;font-size:1.4rem'>Pagamento Confirmado!</h1>"
+        "<div style='background:linear-gradient(135deg,#e8001c,#6b0fa8);padding:32px;text-align:center;border-radius:16px 16px 0 0'>"
+        "<h1 style='color:#fff;margin:0 0 4px;font-size:1.5rem;font-weight:800'>Hostweb</h1>"
+        "<p style='color:rgba(255,255,255,.8);margin:0;font-size:.9rem'>Pagamento Confirmado!</p>"
         "</div>"
         "<div style='padding:32px'>"
         f"<p style='color:#333'>Olá, <strong>{nome}</strong>!</p>"
         f"<p style='color:#555;line-height:1.7'>Seu plano <strong style='color:#e8001c'>"
-        f"{plano}</strong> já está ativo.</p>"
-        "<div style='background:#f5f5f7;border-radius:10px;padding:20px;margin:20px 0;"
-        "border-left:4px solid #6b0fa8'>"
+        f"{plano}</strong> já está ativo. Em breve você receberá as credenciais de acesso.</p>"
+        "<div style='background:#fff5f5;border-radius:10px;padding:20px;margin:20px 0;"
+        "border-left:4px solid #e8001c'>"
         "<p style='margin:0;font-size:.85rem;color:#444'><strong>Próximos passos:</strong><br><br>"
-        "1. Acesse o painel cPanel com as credenciais enviadas separadamente.<br>"
-        "2. Suporte: <a href='https://hostweb.com.br/suporte'>hostweb.com.br/suporte</a><br>"
-        "3. WhatsApp: <a href='https://wa.me/5585991293286'>+55 85 99129-3286</a><br>"
-        "4. Atendimento: em até <strong>4 horas úteis</strong></p>"
+        "1. Verifique seu e-mail com as credenciais de acesso ao painel.<br>"
+        "2. Suporte: <a href='https://hostweb.com.br/suporte' style='color:#e8001c'>hostweb.com.br/suporte</a><br>"
+        "3. WhatsApp: <a href='https://wa.me/5585991293286' style='color:#e8001c'>+55 85 99129-3286</a><br>"
+        "4. Atendimento: segunda a sexta, das 8h às 18h</p>"
         "</div>"
         "<p style='color:#999;font-size:.78rem;text-align:center'>"
         "Hostweb Data Center e Serviços LTDA EPP — CNPJ 07.797.967/0001-60 — Fortaleza, CE</p>"
         "</div></div></body></html>"
     )
-    msg.attach(MIMEText(html, "html", "utf-8"))
     try:
-        with smtp_conn() as conn:
-            conn.sendmail(EMAIL_FROM, email_cliente, msg.as_string())
+        graph_send_email(
+            to        = email_cliente,
+            subject   = f"Bem-vindo à Hostweb! Seu plano {plano} está ativo",
+            html_body = html,
+            reply_to  = EMAIL_REPLY,
+        )
         print(f"E-mail boas-vindas enviado → {email_cliente}")
     except Exception as e:
-        print(f"Falha boas-vindas: {e}")
+        print(f"Falha boas-vindas (Graph): {e}")
 
 
 # ── ROTAS ─────────────────────────────────────────────────────────────────────
@@ -175,13 +166,14 @@ def health():
         db_ok = True
     except Exception:
         pass
+    from utils import AZURE_CLIENT_ID
     key = stripe.api_key or ""
     return jsonify({
         "status":      "online",
         "database":    "ok" if db_ok else "erro",
         "stripe_mode": "test" if "test" in key else "live",
-        "smtp":        bool(SMTP_USER),
-        "blueprints":  ["aceite"],
+        "graph_email": "ok" if AZURE_CLIENT_ID else "não configurado",
+        "blueprints":  ["aceite", "pages"],
     })
 
 

@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}Parceria Zoho — Hostweb{% endblock %}
+{% block description %}Distribuidor oficial Zoho no Norte e Nordeste. Zoho Mail, CRM e Zoho One com suporte em português, faturamento em BRL e onboarding local.{% endblock %}
+
+{% block content %}
+
+<!-- HERO ZOHO -->
+<section class="page-hero">
+  <div class="partner-badge">
+    <i class="fas fa-handshake"></i> Parceiro Oficial Zoho
+  </div>
+  <img class="zoho-logo-img"
+       src="{{ url_for('static', filename='img/zoho-logo.png') }}"
+       alt="Zoho Corporation">
+  <h1>Soluções Zoho com<br>suporte local Hostweb</h1>
+  <p>Implantamos, configuramos e suportamos toda a suíte Zoho com atendimento em português, faturamento em BRL e time especializado no Norte e Nordeste do Brasil.</p>
+  <div class="hero-ctas" style="margin-top:32px">
+    <a href="https://wa.me/5585991293286?text=Olá!%20Tenho%20interesse%20nas%20soluções%20Zoho.%20Podem%20me%20ajudar?" target="_blank" class="btn-wa">
+      <i class="fab fa-whatsapp"></i> Falar com Especialista
+    </a>
+    <a href="mailto:comercial@hostweb.com.br?subject=Interesse%20em%20Zoho" class="btn-outline">
+      <i class="fas fa-envelope"></i> Enviar E-mail
+    </a>
+  </div>
+</section>
+
+<!-- PRODUTOS ZOHO -->
+<div class="section">
+  <div class="section-title">
+    <div class="section-tag"><i class="fas fa-cubes"></i> Produtos</div>
+    <h2>Soluções que distribuímos</h2>
+    <p>Implantamos toda a suíte Zoho conforme a necessidade da sua empresa.</p>
+  </div>
+
+  <div class="zoho-products-grid">
+
+    <div class="zoho-product-card">
+      <div class="zoho-product-icon"><i class="fas fa-envelope"></i></div>
+      <h3>Zoho Mail</h3>
+      <p>E-mail corporativo seguro, sem anúncios, com calendário, contatos e tarefas integradas.</p>
+    </div>
+
+    <div class="zoho-product-card">
+      <div class="zoho-product-icon"><i class="fas fa-chart-line"></i></div>
+      <h3>Zoho CRM</h3>
+      <p>Gestão de clientes, funil de vendas, automações e relatórios em tempo real para a sua equipe comercial.</p>
+    </div>
+
+    <div class="zoho-product-card">
+      <div class="zoho-product-icon"><i class="fas fa-layer-group"></i></div>
+      <h3>Zoho One</h3>
+      <p>Suíte completa com mais de 45 aplicativos integrados: ERP, RH, projetos, finanças e muito mais.</p>
+    </div>
+
+    <div class="zoho-product-card">
+      <div class="zoho-product-icon"><i class="fas fa-users"></i></div>
+      <h3>Zoho Workplace</h3>
+      <p>Plataforma de colaboração com e-mail, chat, videoconferência, documentos e intranet corporativa.</p>
+    </div>
+
+    <div class="zoho-product-card">
+      <div class="zoho-product-icon"><i class="fas fa-file-invoice"></i></div>
+      <h3>Zoho Books</h3>
+      <p>Contabilidade e gestão financeira em conformidade com a legislação brasileira, com integração a NFe.</p>
+    </div>
+
+    <div class="zoho-product-card">
+      <div class="zoho-product-icon"><i class="fas fa-bullhorn"></i></div>
+      <h3>Zoho Campaigns</h3>
+      <p>Plataforma de e-mail marketing e automação de campanhas integrada ao Zoho CRM.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- BENEFÍCIOS DA PARCERIA -->
+<div class="section-white">
+  <div class="section">
+    <div class="section-title">
+      <div class="section-tag"><i class="fas fa-star"></i> Por que contratar pela Hostweb?</div>
+      <h2>Vantagens da parceria</h2>
+      <p>Mais do que revender licenças, acompanhamos toda a jornada de implantação da sua empresa.</p>
+    </div>
+
+    <div class="benefits-grid">
+
+      <div class="benefit-card">
+        <span class="benefit-icon"><i class="fas fa-comments"></i></span>
+        <div>
+          <h4>Suporte em português</h4>
+          <p>Atendimento técnico em português com time especializado em Fortaleza, CE. SLA de 4 horas úteis.</p>
+        </div>
+      </div>
+
+      <div class="benefit-card">
+        <span class="benefit-icon"><i class="fas fa-money-bill-wave"></i></span>
+        <div>
+          <h4>Faturamento em BRL</h4>
+          <p>Pague em reais, sem variação cambial e com NF-e emitida por empresa brasileira. CNPJ 07.797.967/0001-60.</p>
+        </div>
+      </div>
+
+      <div class="benefit-card">
+        <span class="benefit-icon"><i class="fas fa-rocket"></i></span>
+        <div>
+          <h4>Onboarding incluso</h4>
+          <p>Configuração inicial, migração de e-mails e treinamento da equipe sem custo adicional nos planos anuais.</p>
+        </div>
+      </div>
+
+      <div class="benefit-card">
+        <span class="benefit-icon"><i class="fas fa-map-marker-alt"></i></span>
+        <div>
+          <h4>Presença local</h4>
+          <p>Somos o principal parceiro Zoho no Norte e Nordeste do Brasil, com clientes em mais de 5 estados.</p>
+        </div>
+      </div>
+
+      <div class="benefit-card">
+        <span class="benefit-icon"><i class="fas fa-shield-halved"></i></span>
+        <div>
+          <h4>Compliance LGPD</h4>
+          <p>Auxiliamos na configuração da suíte Zoho em conformidade com a LGPD e boas práticas de segurança.</p>
+        </div>
+      </div>
+
+      <div class="benefit-card">
+        <span class="benefit-icon"><i class="fas fa-puzzle-piece"></i></span>
+        <div>
+          <h4>Integrações sob medida</h4>
+          <p>Integramos o Zoho com seu ERP, e-commerce, WhatsApp e outros sistemas já utilizados pela empresa.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CTA FINAL -->
+<div class="section">
+  <div class="cta-banner">
+    <h2>Pronto para implementar o Zoho na sua empresa?</h2>
+    <p>Fale com um especialista para receber uma proposta personalizada com o melhor custo-benefício para o seu negócio.</p>
+    <div class="cta-banner-btns">
+      <a href="https://wa.me/5585991293286?text=Olá!%20Quero%20uma%20proposta%20para%20o%20Zoho.%20Podem%20me%20ajudar?" target="_blank" class="btn-wa">
+        <i class="fab fa-whatsapp"></i> Falar com Especialista
+      </a>
+      <a href="mailto:comercial@hostweb.com.br?subject=Proposta%20Zoho" class="btn-cta-ghost">
+        <i class="fas fa-envelope"></i> Solicitar Proposta por E-mail
+      </a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

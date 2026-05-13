@@ -24,11 +24,9 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
 import qrcode, hashlib, uuid, os, io, stripe, psycopg2, psycopg2.extras
 from datetime import datetime, timezone
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 import pytz
 
-from utils import PLANS, smtp_conn, SMTP_USER, SMTP_PASS, EMAIL_FROM, EMAIL_REPLY, get_db
+from utils import PLANS, graph_send_email, EMAIL_FROM, EMAIL_REPLY, get_db
 
 aceite_bp = Blueprint(
     "aceite",
@@ -147,25 +145,15 @@ def _salvar_aceite(protocolo, nome, email, cpf_cnpj, empresa, plano, plan_id,
 
 def enviar_email_confirmacao(email_cliente, nome, plano, protocolo,
                               timestamp_brt, timestamp_utc, ip, versao_termos):
-    if not SMTP_USER or not SMTP_PASS:
-        print("SMTP não configurado — e-mail de confirmação não enviado.")
-        return
-    msg = MIMEMultipart("alternative")
-    msg["Subject"]  = f"Confirmação de Aceite Digital — Hostweb | Protocolo {protocolo}"
-    msg["From"]     = f"Hostweb <{EMAIL_FROM}>"
-    msg["To"]       = email_cliente
-    msg["Reply-To"] = EMAIL_REPLY
-
     html = f"""
 <html><body style="font-family:Segoe UI,sans-serif;background:#f5f5f7;padding:32px">
 <div style="max-width:600px;margin:0 auto;background:#fff;border-radius:16px;
   box-shadow:0 4px 24px rgba(0,0,0,.08)">
   <div style="background:linear-gradient(135deg,#e8001c,#6b0fa8);padding:32px;text-align:center;
     border-radius:16px 16px 0 0">
-    <img src="https://hostweb.com.br/wp-content/uploads/2021/03/Logo-Hostweb.png"
-      alt="Hostweb" style="height:48px;filter:brightness(0) invert(1)">
-    <h1 style="color:#fff;margin:16px 0 0;font-size:1.3rem">Aceite Digital Registrado</h1>
-    <p style="color:rgba(255,255,255,.8);font-size:.85rem;margin:6px 0 0">
+    <h1 style="color:#fff;margin:0 0 6px;font-size:1.4rem;font-weight:800">Hostweb</h1>
+    <p style="color:rgba(255,255,255,.85);font-size:.9rem;margin:0">Aceite Digital Registrado</p>
+    <p style="color:rgba(255,255,255,.65);font-size:.8rem;margin:6px 0 0">
       Registro eletrônico com validade jurídica</p>
   </div>
   <div style="padding:32px">
@@ -175,45 +163,41 @@ def enviar_email_confirmacao(email_cliente, nome, plano, protocolo,
       <strong>validade jurídica</strong> conforme MP 2.200-2/2001,
       Lei 14.063/2020, Marco Civil da Internet e LGPD.
     </p>
-    <div style="background:#f9f5ff;border:1px solid #d8b4fe;border-radius:10px;
+    <div style="background:#fff5f5;border:1px solid #fecaca;border-radius:10px;
       padding:20px;margin:20px 0">
-      <h3 style="color:#6b0fa8;margin:0 0 14px;font-size:.95rem">
+      <h3 style="color:#e8001c;margin:0 0 14px;font-size:.95rem">
         🔐 Dados do Aceite Digital
       </h3>
       <table style="width:100%;font-size:.85rem;border-collapse:collapse">
-        <tr style="background:#f0e6ff">
-          <td style="padding:8px;font-weight:700;color:#6b0fa8;width:40%">Protocolo</td>
+        <tr style="background:#fef2f2">
+          <td style="padding:8px;font-weight:700;color:#e8001c;width:40%">Protocolo</td>
           <td style="padding:8px;font-family:monospace;color:#e8001c;font-weight:700">{protocolo}</td>
         </tr>
         <tr>
-          <td style="padding:8px;font-weight:700;color:#6b0fa8">Plano contratado</td>
+          <td style="padding:8px;font-weight:700;color:#e8001c">Plano contratado</td>
           <td style="padding:8px">{plano}</td>
         </tr>
-        <tr style="background:#f0e6ff">
-          <td style="padding:8px;font-weight:700;color:#6b0fa8">Data/Hora (BRT)</td>
+        <tr style="background:#fef2f2">
+          <td style="padding:8px;font-weight:700;color:#e8001c">Data/Hora (BRT)</td>
           <td style="padding:8px">{timestamp_brt}</td>
         </tr>
         <tr>
-          <td style="padding:8px;font-weight:700;color:#6b0fa8">Data/Hora (UTC)</td>
+          <td style="padding:8px;font-weight:700;color:#e8001c">Data/Hora (UTC)</td>
           <td style="padding:8px;font-family:monospace;font-size:.8rem">{timestamp_utc}</td>
         </tr>
-        <tr style="background:#f0e6ff">
-          <td style="padding:8px;font-weight:700;color:#6b0fa8">IP registrado</td>
+        <tr style="background:#fef2f2">
+          <td style="padding:8px;font-weight:700;color:#e8001c">IP registrado</td>
           <td style="padding:8px;font-family:monospace">{ip}</td>
         </tr>
         <tr>
-          <td style="padding:8px;font-weight:700;color:#6b0fa8">Versão dos termos</td>
+          <td style="padding:8px;font-weight:700;color:#e8001c">Versão dos termos</td>
           <td style="padding:8px">{versao_termos}</td>
         </tr>
       </table>
     </div>
     <p style="color:#555;font-size:.85rem">
-      Termos completos: <a href="https://hostweb.com.br/termos" style="color:#6b0fa8">
-        hostweb.com.br/termos</a>
-    </p>
-    <p style="color:#555;font-size:.85rem">
       Dúvidas? 📞 (85) 3288-2062 &nbsp;|&nbsp;
-      💬 <a href="https://wa.me/5585991293286" style="color:#6b0fa8">WhatsApp</a> &nbsp;|&nbsp;
+      💬 <a href="https://wa.me/5585991293286" style="color:#e8001c">WhatsApp</a> &nbsp;|&nbsp;
       Atendimento em até <strong>4 horas úteis</strong>
     </p>
     <hr style="border:none;border-top:1px solid #eee;margin:20px 0">
@@ -225,13 +209,16 @@ def enviar_email_confirmacao(email_cliente, nome, plano, protocolo,
 </div>
 </body></html>
 """
-    msg.attach(MIMEText(html, "html", "utf-8"))
     try:
-        with smtp_conn() as conn:
-            conn.sendmail(EMAIL_FROM, email_cliente, msg.as_string())
+        graph_send_email(
+            to       = email_cliente,
+            subject  = f"Confirmação de Aceite Digital — Hostweb | Protocolo {protocolo}",
+            html_body= html,
+            reply_to = EMAIL_REPLY,
+        )
         print(f"E-mail confirmação enviado → {email_cliente} | {protocolo}")
     except Exception as e:
-        print(f"Falha e-mail confirmação: {e}")
+        print(f"Falha e-mail confirmação (Graph): {e}")
 
 
 def gerar_qrcode_bytes(url):

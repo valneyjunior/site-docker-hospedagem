@@ -622,6 +622,44 @@ ul { list-style: none; }
   border-color: var(--red);
   border-width: 1.5px;
 }
+.plan-card-exclusive {
+  background: linear-gradient(160deg, #fff8f8 0%, #fff 70%);
+  border-top: 3px solid var(--red);
+  border-color: rgba(232,0,28,.2);
+}
+.plan-card-exclusive:hover {
+  border-color: rgba(232,0,28,.4);
+  box-shadow: 0 4px 24px rgba(232,0,28,.1);
+}
+.plan-badge-exclusive {
+  background: var(--dark);
+}
+.plan-consult-label {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--red);
+  line-height: 1;
+  padding-bottom: 5px;
+}
+.plan-cta-exclusive {
+  background: #25d366;
+  color: #fff !important;
+  border-color: #25d366 !important;
+}
+.plan-cta-exclusive:hover {
+  background: #1eb85a;
+  border-color: #1eb85a !important;
+}
+.plan-ghost-link {
+  display: block;
+  text-align: center;
+  font-size: .78rem;
+  color: var(--muted);
+  margin-top: 16px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.plan-ghost-link:hover { color: var(--red); }
 .plan-badge {
   position: absolute;
   top: -12px;
