@@ -41,6 +41,7 @@ VERIFICACAO_BASE_URL = os.getenv("VERIFICACAO_URL", "https://hostweb.com.br/veri
 VERSAO_TERMOS        = "v1.0-2026"
 ASAAS_API_KEY        = os.getenv("ASAAS_API_KEY", "")
 ASAAS_BASE_URL       = os.getenv("ASAAS_BASE_URL", "https://sandbox.asaas.com/api")
+_asaas_verify        = "sandbox" not in ASAAS_BASE_URL
 
 
 def _criar_cliente_asaas(nome, email, cpf_cnpj, telefone=""):
@@ -54,7 +55,7 @@ def _criar_cliente_asaas(nome, email, cpf_cnpj, telefone=""):
     }
     if telefone:
         payload["mobilePhone"] = "".join(c for c in telefone if c.isdigit())
-    resp = _http.post(f"{ASAAS_BASE_URL}/v3/customers", headers=headers, json=payload, timeout=15)
+    resp = _http.post(f"{ASAAS_BASE_URL}/v3/customers", headers=headers, json=payload, timeout=15, verify=_asaas_verify)
     resp.raise_for_status()
     return resp.json()["id"]
 

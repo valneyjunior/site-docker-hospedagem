@@ -15,6 +15,12 @@ CORS(app)
 ASAAS_API_KEY  = os.getenv("ASAAS_API_KEY", "")
 ASAAS_BASE_URL = os.getenv("ASAAS_BASE_URL", "https://sandbox.asaas.com/api")
 
+_asaas_verify = "sandbox" not in ASAAS_BASE_URL
+_asaas_http   = _http.Session()
+_asaas_http.verify = _asaas_verify
+if not _asaas_verify:
+    import urllib3; urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 def _asaas_headers():
     return {"Content-Type": "application/json", "access_token": ASAAS_API_KEY}
 
@@ -73,7 +79,7 @@ def create_customer():
         "phone":                data.get("phone"),
         "notificationDisabled": True,
     }
-    resp = _http.post(f"{ASAAS_BASE_URL}/v3/customers", headers=_asaas_headers(), json=payload)
+    resp = _asaas_http.post(f"{ASAAS_BASE_URL}/v3/customers", headers=_asaas_headers(), json=payload)
     if resp.status_code in (200, 201):
         return jsonify({"success": True, "customerId": resp.json()["id"]})
     return jsonify({"success": False, "error": resp.json()}), 400
@@ -107,7 +113,7 @@ def pay_credit_card():
         },
         "remoteIp": request.remote_addr,
     }
-    resp = _http.post(f"{ASAAS_BASE_URL}/v3/payments", headers=_asaas_headers(), json=payload)
+    resp = _asaas_http.post(f"{ASAAS_BASE_URL}/v3/payments", headers=_asaas_headers(), json=payload)
     if resp.status_code in (200, 201):
         result = resp.json()
         return jsonify({"success": True, "paymentId": result["id"], "status": result["status"]})
@@ -126,14 +132,14 @@ def pay_pix():
         "dueDate":     due_date,
         "description": data.get("description", "Plano Hostweb"),
     }
-    resp = _http.post(f"{ASAAS_BASE_URL}/v3/payments", headers=_asaas_headers(), json=payload)
+    resp = _asaas_http.post(f"{ASAAS_BASE_URL}/v3/payments", headers=_asaas_headers(), json=payload)
     if resp.status_code not in (200, 201):
         return jsonify({"success": False, "error": resp.json()}), 400
 
     payment    = resp.json()
     payment_id = payment["id"]
 
-    pix_resp = _http.get(
+    pix_resp = _asaas_http.get(
         f"{ASAAS_BASE_URL}/v3/payments/{payment_id}/pixQrCode",
         headers=_asaas_headers(),
     )
@@ -163,7 +169,7 @@ def pay_boleto():
         "dueDate":     due_date,
         "description": data.get("description", "Plano Hostweb"),
     }
-    resp = _http.post(f"{ASAAS_BASE_URL}/v3/payments", headers=_asaas_headers(), json=payload)
+    resp = _asaas_http.post(f"{ASAAS_BASE_URL}/v3/payments", headers=_asaas_headers(), json=payload)
     if resp.status_code in (200, 201):
         result = resp.json()
         return jsonify({
@@ -179,7 +185,7 @@ def pay_boleto():
 # ── STATUS ────────────────────────────────────────────────────────────────────
 @app.route("/api/payments/<payment_id>/status", methods=["GET"])
 def check_payment_status(payment_id):
-    resp = _http.get(f"{ASAAS_BASE_URL}/v3/payments/{payment_id}", headers=_asaas_headers())
+    resp = _asaas_http.get(f"{ASAAS_BASE_URL}/v3/payments/{payment_id}", headers=_asaas_headers())
     if resp.status_code == 200:
         result = resp.json()
         return jsonify({"success": True, "paymentId": result["id"], "status": result["status"]})
