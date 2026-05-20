@@ -22,8 +22,6 @@ services:
     env_file: .env
     environment:
       DATABASE_URL: postgresql://hostweb:${POSTGRES_PASSWORD}@postgres:5432/hostweb
-    volumes:
-      - ./frontend/assets/img:/app/static/img:ro
     depends_on:
       postgres:
         condition: service_healthy
