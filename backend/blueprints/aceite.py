@@ -144,7 +144,8 @@ def _capturar_metadados():
 
 
 def _salvar_aceite(protocolo, nome, email, cpf_cnpj, empresa, plano, plan_id,
-                   ip, user_agent, timestamp_utc, timestamp_brt, hash_termo):
+                   ip, user_agent, timestamp_utc, timestamp_brt, hash_termo,
+                   dominio="", telefone="", asaas_customer_id=None):
     """Persiste aceite no PostgreSQL."""
     conn = get_db()
     try:
@@ -153,10 +154,12 @@ def _salvar_aceite(protocolo, nome, email, cpf_cnpj, empresa, plano, plan_id,
                 cur.execute("""
                     INSERT INTO aceites
                         (protocolo, nome, email, cpf_cnpj, empresa, plano, plan_id,
+                         dominio, telefone, asaas_customer_id,
                          ip, user_agent, timestamp_utc, timestamp_brt,
                          versao_termos, hash_sha256)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """, (protocolo, nome, email, cpf_cnpj, empresa, plano, plan_id,
+                      dominio or None, telefone or None, asaas_customer_id,
                       ip, user_agent, timestamp_utc, timestamp_brt,
                       VERSAO_TERMOS, hash_termo))
     finally:
@@ -429,21 +432,22 @@ def confirmar_aceite():
 
     plano_nome = plan_info["name"]
 
+    try:
+        customer_id = _criar_cliente_asaas(nome, email, cpf_cnpj, telefone)
+    except Exception as e:
+        return jsonify({"erro": f"Erro ao cadastrar no gateway de pagamento: {e}"}), 500
+
     meta = _capturar_metadados()
     _salvar_aceite(
         meta["protocolo"], nome, email, cpf_cnpj, empresa, plano_nome, plan_id,
         meta["ip"], meta["user_agent"],
         meta["timestamp_utc"], meta["timestamp_brt"], meta["hash_termo"],
+        dominio=dominio, telefone=telefone, asaas_customer_id=customer_id,
     )
     enviar_email_confirmacao(
         email, nome, plano_nome, meta["protocolo"],
         meta["timestamp_brt"], meta["timestamp_utc"], meta["ip"], VERSAO_TERMOS,
     )
-
-    try:
-        customer_id = _criar_cliente_asaas(nome, email, cpf_cnpj, telefone)
-    except Exception as e:
-        return jsonify({"erro": f"Erro ao cadastrar no gateway de pagamento: {e}"}), 500
 
     return jsonify({
         "ok":         True,

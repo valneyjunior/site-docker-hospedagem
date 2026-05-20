@@ -5,7 +5,8 @@ from datetime import datetime, timedelta
 import requests as _http
 import os
 
-from utils import PLANS, graph_send_email, EMAIL_FROM, EMAIL_REPLY
+from utils import PLANS, graph_send_email, EMAIL_FROM, EMAIL_REPLY, get_db
+from whm import criar_conta_cpanel, suspender_conta, reativar_conta
 
 load_dotenv()
 
@@ -192,21 +193,185 @@ def check_payment_status(payment_id):
     return jsonify({"success": False, "error": resp.json()}), 400
 
 
+# ── PROVISIONAMENTO ───────────────────────────────────────────────────────────
+def _email_credenciais(email, nome, plano, dominio, username, senha):
+    cpanel_url = f"https://{os.getenv('WHM_HOST', 'seu-servidor')}:2083"
+    html = (
+        "<html><body style='font-family:Segoe UI,sans-serif;background:#f5f5f7;padding:32px'>"
+        "<div style='max-width:580px;margin:0 auto;background:#fff;border-radius:16px;"
+        "box-shadow:0 4px 24px rgba(0,0,0,.08)'>"
+        "<div style='background:linear-gradient(135deg,#e8001c,#6b0fa8);padding:32px;"
+        "text-align:center;border-radius:16px 16px 0 0'>"
+        "<h1 style='color:#fff;margin:0 0 4px;font-size:1.5rem;font-weight:800'>Hostweb</h1>"
+        "<p style='color:rgba(255,255,255,.8);margin:0;font-size:.9rem'>Acesso ao seu cPanel</p>"
+        "</div>"
+        "<div style='padding:32px'>"
+        f"<p style='color:#333'>Olá, <strong>{nome}</strong>!</p>"
+        f"<p style='color:#555;line-height:1.7'>Seu plano <strong style='color:#e8001c'>{plano}</strong> "
+        "foi ativado. Abaixo estão seus dados de acesso ao painel cPanel.</p>"
+        "<div style='background:#f8f9fa;border-radius:10px;padding:24px;margin:20px 0;"
+        "border:1.5px solid #e9ecef'>"
+        f"<p style='margin:0 0 10px;color:#333'><strong>🌐 Domínio:</strong> {dominio}</p>"
+        f"<p style='margin:0 0 10px;color:#333'><strong>👤 Usuário:</strong> "
+        f"<code style='background:#fff;padding:2px 8px;border-radius:4px;font-size:.95rem'>{username}</code></p>"
+        f"<p style='margin:0 0 10px;color:#333'><strong>🔑 Senha:</strong> "
+        f"<code style='background:#fff;padding:2px 8px;border-radius:4px;font-size:.95rem'>{senha}</code></p>"
+        f"<p style='margin:0;color:#333'><strong>🔗 Acesso:</strong> "
+        f"<a href='{cpanel_url}' style='color:#e8001c'>{cpanel_url}</a></p>"
+        "</div>"
+        "<div style='background:#fff5f5;border-radius:10px;padding:20px;margin:20px 0;"
+        "border-left:4px solid #e8001c'>"
+        "<p style='margin:0;font-size:.85rem;color:#444'><strong>Recomendações de segurança:</strong><br><br>"
+        "1. Troque sua senha no primeiro acesso.<br>"
+        "2. Ative o SSL gratuito em <em>cPanel → Let's Encrypt</em>.<br>"
+        "3. Configure o backup automático em <em>cPanel → Backup</em>.<br>"
+        "4. Suporte: <a href='https://hostweb.com.br/suporte' style='color:#e8001c'>hostweb.com.br/suporte</a> "
+        "· WhatsApp: <a href='https://wa.me/5585991293286' style='color:#e8001c'>+55 85 99129-3286</a><br>"
+        "5. Atendimento: segunda a sexta, das 8h às 18h</p>"
+        "</div>"
+        "<p style='color:#999;font-size:.78rem;text-align:center'>"
+        "Hostweb Data Center e Serviços LTDA EPP — CNPJ 07.797.967/0001-60 — Fortaleza, CE</p>"
+        "</div></div></body></html>"
+    )
+    try:
+        graph_send_email(
+            to        = email,
+            subject   = f"Hostweb — Acesso ao cPanel: {dominio}",
+            html_body = html,
+            reply_to  = EMAIL_REPLY,
+        )
+        print(f"E-mail credenciais enviado → {email}")
+    except Exception as exc:
+        print(f"Falha e-mail credenciais: {exc}")
+
+
+def _provisionar(payment_id: str, customer_id: str):
+    """Busca aceite, cria conta WHM e registra em provisionamentos."""
+    conn = get_db()
+    try:
+        with conn.cursor() as cur:
+            # busca aceite pelo customer_id do Asaas
+            cur.execute(
+                "SELECT id, nome, email, plan_id, plano, dominio FROM aceites "
+                "WHERE asaas_customer_id = %s ORDER BY criado_em DESC LIMIT 1",
+                (customer_id,)
+            )
+            row = cur.fetchone()
+            if not row:
+                print(f"[PROVISIONING] Aceite não encontrado para customer={customer_id}")
+                return
+
+            aceite_id, nome, email, plan_id, plano, dominio = row
+
+            # evita duplo provisionamento
+            cur.execute(
+                "SELECT id FROM provisionamentos WHERE asaas_payment_id = %s", (payment_id,)
+            )
+            if cur.fetchone():
+                print(f"[PROVISIONING] Pagamento {payment_id} já provisionado — ignorado")
+                return
+
+            # registra como pendente
+            cur.execute("""
+                INSERT INTO provisionamentos
+                    (aceite_id, asaas_payment_id, asaas_customer_id, dominio, plano, status)
+                VALUES (%s, %s, %s, %s, %s, 'pendente')
+                RETURNING id
+            """, (aceite_id, payment_id, customer_id, dominio, plano))
+            prov_id = cur.fetchone()[0]
+        conn.commit()
+
+        plan_info   = PLANS.get(plan_id or "", {})
+        whm_package = plan_info.get("whm_package")
+
+        if not whm_package:
+            # plano sem provisionamento automático (Zoho, dedicado, domínio)
+            with conn.cursor() as cur:
+                cur.execute(
+                    "UPDATE provisionamentos SET status='manual', erro_msg=%s WHERE id=%s",
+                    ("Plano requer provisionamento manual.", prov_id)
+                )
+            conn.commit()
+            enviar_email_boas_vindas(email, nome, plano)
+            print(f"[PROVISIONING] Plano {plan_id} marcado para provisionamento manual")
+            return
+
+        username, senha, ok, msg = criar_conta_cpanel(dominio or "", email, nome, whm_package)
+
+        if ok:
+            with conn.cursor() as cur:
+                cur.execute("""
+                    UPDATE provisionamentos
+                    SET status='provisionado', cpanel_username=%s, whm_package=%s,
+                        provisionado_em=NOW(), erro_msg=NULL
+                    WHERE id=%s
+                """, (username, whm_package, prov_id))
+            conn.commit()
+            _email_credenciais(email, nome, plano, dominio or "", username, senha)
+            print(f"[PROVISIONING] OK | {dominio} | user={username} | plano={whm_package}")
+        else:
+            with conn.cursor() as cur:
+                cur.execute(
+                    "UPDATE provisionamentos SET status='erro', erro_msg=%s WHERE id=%s",
+                    (msg, prov_id)
+                )
+            conn.commit()
+            enviar_email_boas_vindas(email, nome, plano)
+            print(f"[PROVISIONING] ERRO | {dominio} | {msg}")
+
+    except Exception as exc:
+        print(f"[PROVISIONING] Exceção: {exc}")
+    finally:
+        conn.close()
+
+
 # ── WEBHOOK ───────────────────────────────────────────────────────────────────
 @app.route("/api/webhook/asaas", methods=["POST"])
 def webhook_asaas():
     data       = request.json or {}
     event      = data.get("event")
     payment    = data.get("payment", {})
-    payment_id = payment.get("id")
-    status     = payment.get("status")
-    print(f"[WEBHOOK] {event} | payment={payment_id} | status={status}")
+    payment_id = payment.get("id", "")
+    customer_id = payment.get("customer", "")
+    print(f"[WEBHOOK] {event} | payment={payment_id} | customer={customer_id}")
 
     if event in ("PAYMENT_CONFIRMED", "PAYMENT_RECEIVED"):
-        customer_email = payment.get("customer", {}).get("email") if isinstance(payment.get("customer"), dict) else ""
-        description    = payment.get("description", "Plano Hostweb")
-        if customer_email:
-            enviar_email_boas_vindas(customer_email, "Cliente", description)
+        if payment_id and customer_id:
+            _provisionar(payment_id, customer_id)
+
+    elif event == "PAYMENT_OVERDUE":
+        # busca username e suspende
+        try:
+            conn = get_db()
+            with conn.cursor() as cur:
+                cur.execute(
+                    "SELECT cpanel_username FROM provisionamentos WHERE asaas_customer_id=%s "
+                    "AND status='provisionado' LIMIT 1", (customer_id,)
+                )
+                row = cur.fetchone()
+            conn.close()
+            if row and row[0]:
+                suspender_conta(row[0], razao="inadimplencia")
+                print(f"[WEBHOOK] Conta suspensa: {row[0]}")
+        except Exception as exc:
+            print(f"[WEBHOOK] Erro ao suspender: {exc}")
+
+    elif event == "PAYMENT_RECEIVED" and payment.get("status") == "RECEIVED":
+        # reativação após pagamento de conta em atraso
+        try:
+            conn = get_db()
+            with conn.cursor() as cur:
+                cur.execute(
+                    "SELECT cpanel_username FROM provisionamentos WHERE asaas_customer_id=%s "
+                    "AND status='provisionado' LIMIT 1", (customer_id,)
+                )
+                row = cur.fetchone()
+            conn.close()
+            if row and row[0]:
+                reativar_conta(row[0])
+                print(f"[WEBHOOK] Conta reativada: {row[0]}")
+        except Exception as exc:
+            print(f"[WEBHOOK] Erro ao reativar: {exc}")
 
     return jsonify({"received": True}), 200
 

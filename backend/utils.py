@@ -63,35 +63,37 @@ def get_db():
     return psycopg2.connect(os.getenv("DATABASE_URL"))
 
 # ── PLANOS ────────────────────────────────────────────────────────────────────
+# whm_package: nome exato do pacote criado no WHM → Account Functions → Add a Package
+# None = sem provisionamento automático (Zoho, domínios, dedicados sob consulta)
 PLANS = {
     # ── Hospedagem Compartilhada (legado) ─────────────────────────────────────
-    "starter_mensal":            {"name": "Starter Mensal",           "value": 39.90},
-    "business_mensal":           {"name": "Business Mensal",          "value": 69.90},
-    "business_plus_mensal":      {"name": "Business Plus Mensal",     "value": 99.90},
-    "enterprise_mensal":         {"name": "Enterprise Mensal",        "value": 149.90},
-    "starter_anual":             {"name": "Starter Anual",            "value": 407.04},
-    "business_anual":            {"name": "Business Anual",           "value": 713.04},
-    "business_plus_anual":       {"name": "Business Plus Anual",      "value": 1019.04},
-    "enterprise_anual":          {"name": "Enterprise Anual",         "value": 1529.04},
-    "ded_essencial_mensal":      {"name": "Dedicado Essencial",       "value": 499.00},
-    "ded_profissional_mensal":   {"name": "Dedicado Profissional",    "value": 799.00},
-    "ded_enterprise_mensal":     {"name": "Dedicado Enterprise",      "value": 1299.00},
-    "zoho_mail_lite_5_mensal":   {"name": "Zoho Mail Lite 5GB",      "value": 95.00},
-    "zoho_mail_lite_10_mensal":  {"name": "Zoho Mail Lite 10GB",     "value": 152.00},
-    "zoho_mail_premium_mensal":  {"name": "Zoho Mail Premium",       "value": 285.00},
-    "zoho_workplace_std_mensal": {"name": "Zoho Workplace Padrão",   "value": 190.00},
-    "zoho_workplace_pro_mensal": {"name": "Zoho Workplace Pro",      "value": 380.00},
+    "starter_mensal":            {"name": "Starter Mensal",           "value": 39.90,   "whm_package": "hostweb_starter"},
+    "business_mensal":           {"name": "Business Mensal",          "value": 69.90,   "whm_package": "hostweb_business"},
+    "business_plus_mensal":      {"name": "Business Plus Mensal",     "value": 99.90,   "whm_package": "hostweb_business_plus"},
+    "enterprise_mensal":         {"name": "Enterprise Mensal",        "value": 149.90,  "whm_package": "hostweb_enterprise"},
+    "starter_anual":             {"name": "Starter Anual",            "value": 407.04,  "whm_package": "hostweb_starter"},
+    "business_anual":            {"name": "Business Anual",           "value": 713.04,  "whm_package": "hostweb_business"},
+    "business_plus_anual":       {"name": "Business Plus Anual",      "value": 1019.04, "whm_package": "hostweb_business_plus"},
+    "enterprise_anual":          {"name": "Enterprise Anual",         "value": 1529.04, "whm_package": "hostweb_enterprise"},
+    "ded_essencial_mensal":      {"name": "Dedicado Essencial",       "value": 499.00,  "whm_package": None},
+    "ded_profissional_mensal":   {"name": "Dedicado Profissional",    "value": 799.00,  "whm_package": None},
+    "ded_enterprise_mensal":     {"name": "Dedicado Enterprise",      "value": 1299.00, "whm_package": None},
+    "zoho_mail_lite_5_mensal":   {"name": "Zoho Mail Lite 5GB",      "value": 95.00,   "whm_package": None},
+    "zoho_mail_lite_10_mensal":  {"name": "Zoho Mail Lite 10GB",     "value": 152.00,  "whm_package": None},
+    "zoho_mail_premium_mensal":  {"name": "Zoho Mail Premium",       "value": 285.00,  "whm_package": None},
+    "zoho_workplace_std_mensal": {"name": "Zoho Workplace Padrão",   "value": 190.00,  "whm_package": None},
+    "zoho_workplace_pro_mensal": {"name": "Zoho Workplace Pro",      "value": 380.00,  "whm_package": None},
     # ── Hospedagem de Sites ───────────────────────────────────────────────────
-    "sites_basico_mensal":       {"name": "Hospedagem Básico",        "value": 9.90},
-    "sites_plus_mensal":         {"name": "Hospedagem Plus",          "value": 19.90},
-    "sites_pro_mensal":          {"name": "Hospedagem Pro",           "value": 39.90},
+    "sites_basico_mensal":       {"name": "Hospedagem Básico",        "value": 9.90,    "whm_package": "hostweb_sites_basico"},
+    "sites_plus_mensal":         {"name": "Hospedagem Plus",          "value": 19.90,   "whm_package": "hostweb_sites_plus"},
+    "sites_pro_mensal":          {"name": "Hospedagem Pro",           "value": 39.90,   "whm_package": "hostweb_sites_pro"},
     # ── Hospedagem de E-mail ──────────────────────────────────────────────────
-    "email_starter_mensal":      {"name": "E-mail Starter",           "value": 14.90},
-    "email_business_mensal":     {"name": "E-mail Business",          "value": 29.90},
-    "email_enterprise_mensal":   {"name": "E-mail Enterprise",        "value": 49.90},
+    "email_starter_mensal":      {"name": "E-mail Starter",           "value": 14.90,   "whm_package": "hostweb_email_starter"},
+    "email_business_mensal":     {"name": "E-mail Business",          "value": 29.90,   "whm_package": "hostweb_email_business"},
+    "email_enterprise_mensal":   {"name": "E-mail Enterprise",        "value": 49.90,   "whm_package": "hostweb_email_enterprise"},
     # ── Domínios (pagamento único anual) ──────────────────────────────────────
-    "dominio_com_br":            {"name": "Domínio .com.br",          "value": 39.90},
-    "dominio_com":               {"name": "Domínio .com",             "value": 59.90},
-    "dominio_net":               {"name": "Domínio .net",             "value": 59.90},
-    "dominio_org":               {"name": "Domínio .org",             "value": 59.90},
+    "dominio_com_br":            {"name": "Domínio .com.br",          "value": 39.90,   "whm_package": None},
+    "dominio_com":               {"name": "Domínio .com",             "value": 59.90,   "whm_package": None},
+    "dominio_net":               {"name": "Domínio .net",             "value": 59.90,   "whm_package": None},
+    "dominio_org":               {"name": "Domínio .org",             "value": 59.90,   "whm_package": None},
 }
