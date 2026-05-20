@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
@@ -33,30 +33,7 @@ app.register_blueprint(pages_bp)
 
 
 def enviar_email_boas_vindas(email_cliente, nome, plano):
-    html = (
-        "<html><body style='font-family:Segoe UI,sans-serif;background:#f5f5f7;padding:32px'>"
-        "<div style='max-width:560px;margin:0 auto;background:#fff;border-radius:16px;"
-        "box-shadow:0 4px 24px rgba(0,0,0,.08)'>"
-        "<div style='background:linear-gradient(135deg,#e8001c,#6b0fa8);padding:32px;text-align:center;border-radius:16px 16px 0 0'>"
-        "<h1 style='color:#fff;margin:0 0 4px;font-size:1.5rem;font-weight:800'>Hostweb</h1>"
-        "<p style='color:rgba(255,255,255,.8);margin:0;font-size:.9rem'>Pagamento Confirmado!</p>"
-        "</div>"
-        "<div style='padding:32px'>"
-        f"<p style='color:#333'>Olá, <strong>{nome}</strong>!</p>"
-        f"<p style='color:#555;line-height:1.7'>Seu plano <strong style='color:#e8001c'>"
-        f"{plano}</strong> já está ativo. Em breve você receberá as credenciais de acesso.</p>"
-        "<div style='background:#fff5f5;border-radius:10px;padding:20px;margin:20px 0;"
-        "border-left:4px solid #e8001c'>"
-        "<p style='margin:0;font-size:.85rem;color:#444'><strong>Próximos passos:</strong><br><br>"
-        "1. Verifique seu e-mail com as credenciais de acesso ao painel.<br>"
-        "2. Suporte: <a href='https://hostweb.com.br/suporte' style='color:#e8001c'>hostweb.com.br/suporte</a><br>"
-        "3. WhatsApp: <a href='https://wa.me/5585991293286' style='color:#e8001c'>+55 85 99129-3286</a><br>"
-        "4. Atendimento: segunda a sexta, das 8h às 18h</p>"
-        "</div>"
-        "<p style='color:#999;font-size:.78rem;text-align:center'>"
-        "Hostweb Data Center e Serviços LTDA EPP — CNPJ 07.797.967/0001-60 — Fortaleza, CE</p>"
-        "</div></div></body></html>"
-    )
+    html = render_template("email/boas_vindas.html", nome=nome, plano=plano)
     try:
         graph_send_email(
             to        = email_cliente,
@@ -196,42 +173,10 @@ def check_payment_status(payment_id):
 # ── PROVISIONAMENTO ───────────────────────────────────────────────────────────
 def _email_credenciais(email, nome, plano, dominio, username, senha):
     cpanel_url = f"https://{os.getenv('WHM_HOST', 'seu-servidor')}:2083"
-    html = (
-        "<html><body style='font-family:Segoe UI,sans-serif;background:#f5f5f7;padding:32px'>"
-        "<div style='max-width:580px;margin:0 auto;background:#fff;border-radius:16px;"
-        "box-shadow:0 4px 24px rgba(0,0,0,.08)'>"
-        "<div style='background:linear-gradient(135deg,#e8001c,#6b0fa8);padding:32px;"
-        "text-align:center;border-radius:16px 16px 0 0'>"
-        "<h1 style='color:#fff;margin:0 0 4px;font-size:1.5rem;font-weight:800'>Hostweb</h1>"
-        "<p style='color:rgba(255,255,255,.8);margin:0;font-size:.9rem'>Acesso ao seu cPanel</p>"
-        "</div>"
-        "<div style='padding:32px'>"
-        f"<p style='color:#333'>Olá, <strong>{nome}</strong>!</p>"
-        f"<p style='color:#555;line-height:1.7'>Seu plano <strong style='color:#e8001c'>{plano}</strong> "
-        "foi ativado. Abaixo estão seus dados de acesso ao painel cPanel.</p>"
-        "<div style='background:#f8f9fa;border-radius:10px;padding:24px;margin:20px 0;"
-        "border:1.5px solid #e9ecef'>"
-        f"<p style='margin:0 0 10px;color:#333'><strong>🌐 Domínio:</strong> {dominio}</p>"
-        f"<p style='margin:0 0 10px;color:#333'><strong>👤 Usuário:</strong> "
-        f"<code style='background:#fff;padding:2px 8px;border-radius:4px;font-size:.95rem'>{username}</code></p>"
-        f"<p style='margin:0 0 10px;color:#333'><strong>🔑 Senha:</strong> "
-        f"<code style='background:#fff;padding:2px 8px;border-radius:4px;font-size:.95rem'>{senha}</code></p>"
-        f"<p style='margin:0;color:#333'><strong>🔗 Acesso:</strong> "
-        f"<a href='{cpanel_url}' style='color:#e8001c'>{cpanel_url}</a></p>"
-        "</div>"
-        "<div style='background:#fff5f5;border-radius:10px;padding:20px;margin:20px 0;"
-        "border-left:4px solid #e8001c'>"
-        "<p style='margin:0;font-size:.85rem;color:#444'><strong>Recomendações de segurança:</strong><br><br>"
-        "1. Troque sua senha no primeiro acesso.<br>"
-        "2. Ative o SSL gratuito em <em>cPanel → Let's Encrypt</em>.<br>"
-        "3. Configure o backup automático em <em>cPanel → Backup</em>.<br>"
-        "4. Suporte: <a href='https://hostweb.com.br/suporte' style='color:#e8001c'>hostweb.com.br/suporte</a> "
-        "· WhatsApp: <a href='https://wa.me/5585991293286' style='color:#e8001c'>+55 85 99129-3286</a><br>"
-        "5. Atendimento: segunda a sexta, das 8h às 18h</p>"
-        "</div>"
-        "<p style='color:#999;font-size:.78rem;text-align:center'>"
-        "Hostweb Data Center e Serviços LTDA EPP — CNPJ 07.797.967/0001-60 — Fortaleza, CE</p>"
-        "</div></div></body></html>"
+    html = render_template(
+        "email/credenciais_cpanel.html",
+        nome=nome, plano=plano, dominio=dominio,
+        username=username, senha=senha, cpanel_url=cpanel_url,
     )
     try:
         graph_send_email(

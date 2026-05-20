@@ -168,70 +168,12 @@ def _salvar_aceite(protocolo, nome, email, cpf_cnpj, empresa, plano, plan_id,
 
 def enviar_email_confirmacao(email_cliente, nome, plano, protocolo,
                               timestamp_brt, timestamp_utc, ip, versao_termos):
-    html = f"""
-<html><body style="font-family:Segoe UI,sans-serif;background:#f5f5f7;padding:32px">
-<div style="max-width:600px;margin:0 auto;background:#fff;border-radius:16px;
-  box-shadow:0 4px 24px rgba(0,0,0,.08)">
-  <div style="background:linear-gradient(135deg,#e8001c,#6b0fa8);padding:32px;text-align:center;
-    border-radius:16px 16px 0 0">
-    <h1 style="color:#fff;margin:0 0 6px;font-size:1.4rem;font-weight:800">Hostweb</h1>
-    <p style="color:rgba(255,255,255,.85);font-size:.9rem;margin:0">Aceite Digital Registrado</p>
-    <p style="color:rgba(255,255,255,.65);font-size:.8rem;margin:6px 0 0">
-      Registro eletrônico com validade jurídica</p>
-  </div>
-  <div style="padding:32px">
-    <p style="color:#333">Olá, <strong>{nome}</strong>!</p>
-    <p style="color:#555;line-height:1.7">
-      Seu aceite digital foi registrado com sucesso e possui
-      <strong>validade jurídica</strong> conforme MP 2.200-2/2001,
-      Lei 14.063/2020, Marco Civil da Internet e LGPD.
-    </p>
-    <div style="background:#fff5f5;border:1px solid #fecaca;border-radius:10px;
-      padding:20px;margin:20px 0">
-      <h3 style="color:#e8001c;margin:0 0 14px;font-size:.95rem">
-        🔐 Dados do Aceite Digital
-      </h3>
-      <table style="width:100%;font-size:.85rem;border-collapse:collapse">
-        <tr style="background:#fef2f2">
-          <td style="padding:8px;font-weight:700;color:#e8001c;width:40%">Protocolo</td>
-          <td style="padding:8px;font-family:monospace;color:#e8001c;font-weight:700">{protocolo}</td>
-        </tr>
-        <tr>
-          <td style="padding:8px;font-weight:700;color:#e8001c">Plano contratado</td>
-          <td style="padding:8px">{plano}</td>
-        </tr>
-        <tr style="background:#fef2f2">
-          <td style="padding:8px;font-weight:700;color:#e8001c">Data/Hora (BRT)</td>
-          <td style="padding:8px">{timestamp_brt}</td>
-        </tr>
-        <tr>
-          <td style="padding:8px;font-weight:700;color:#e8001c">Data/Hora (UTC)</td>
-          <td style="padding:8px;font-family:monospace;font-size:.8rem">{timestamp_utc}</td>
-        </tr>
-        <tr style="background:#fef2f2">
-          <td style="padding:8px;font-weight:700;color:#e8001c">IP registrado</td>
-          <td style="padding:8px;font-family:monospace">{ip}</td>
-        </tr>
-        <tr>
-          <td style="padding:8px;font-weight:700;color:#e8001c">Versão dos termos</td>
-          <td style="padding:8px">{versao_termos}</td>
-        </tr>
-      </table>
-    </div>
-    <p style="color:#555;font-size:.85rem">
-      Dúvidas? 📞 (85) 3288-2062 &nbsp;|&nbsp;
-      💬 <a href="https://wa.me/5585991293286" style="color:#e8001c">WhatsApp</a> &nbsp;|&nbsp;
-      Atendimento em até <strong>4 horas úteis</strong>
-    </p>
-    <hr style="border:none;border-top:1px solid #eee;margin:20px 0">
-    <p style="color:#999;font-size:.75rem;text-align:center">
-      Hostweb Data Center e Serviços LTDA EPP — CNPJ 07.797.967/0001-60 — Fortaleza, CE<br>
-      Validade: MP 2.200-2/2001 · Lei 14.063/2020 · LGPD
-    </p>
-  </div>
-</div>
-</body></html>
-"""
+    html = render_template(
+        "email/aceite_confirmacao.html",
+        nome=nome, plano=plano, protocolo=protocolo,
+        timestamp_brt=timestamp_brt, timestamp_utc=timestamp_utc,
+        ip=ip, versao_termos=versao_termos,
+    )
     try:
         graph_send_email(
             to       = email_cliente,
